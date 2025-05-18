@@ -1,13 +1,13 @@
 {
   "files": {
-    "main.css": "/vamsi-portfolio/static/css/main.56851a94.css",
-    "main.js": "/vamsi-portfolio/static/js/main.1ce9fa35.js",
+    "main.css": "/vamsi-portfolio/static/css/main.49cbccf5.css",
+    "main.js": "/vamsi-portfolio/static/js/main.8c4dd79e.js",
     "index.html": "/vamsi-portfolio/index.html",
-    "main.56851a94.css.map": "/vamsi-portfolio/static/css/main.56851a94.css.map",
-    "main.1ce9fa35.js.map": "/vamsi-portfolio/static/js/main.1ce9fa35.js.map"
+    "main.49cbccf5.css.map": "/vamsi-portfolio/static/css/main.49cbccf5.css.map",
+    "main.8c4dd79e.js.map": "/vamsi-portfolio/static/js/main.8c4dd79e.js.map"
   },
   "entrypoints": [
-    "static/css/main.56851a94.css",
-    "static/js/main.1ce9fa35.js"
+    "static/css/main.49cbccf5.css",
+    "static/js/main.8c4dd79e.js"
   ]
 }
