@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/vamsi-portfolio/static/css/main.56851a94.css",
+    "main.js": "/vamsi-portfolio/static/js/main.9c258ccf.js",
+    "index.html": "/vamsi-portfolio/index.html",
+    "main.56851a94.css.map": "/vamsi-portfolio/static/css/main.56851a94.css.map",
+    "main.9c258ccf.js.map": "/vamsi-portfolio/static/js/main.9c258ccf.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.56851a94.css",
+    "static/js/main.9c258ccf.js"
+  ]
+}
