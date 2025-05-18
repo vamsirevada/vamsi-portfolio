@@ -24,7 +24,7 @@ function Hero() {
       aria-label="Hero section introducing Vamsi Revada"
     >
       <img
-        src="/avatar.jpg"
+        src={`${process.env.PUBLIC_URL}/avatar.jpg`}
         alt="Portrait of Vamsi Revada"
         className="avatar"
         loading="lazy"
@@ -52,7 +52,7 @@ function Hero() {
         viewport={{ once: true, amount: 0.6 }}
       >
         <motion.a
-          href="/Vamsi_Revada_Resume.pdf"
+          href={`${process.env.PUBLIC_URL}/Vamsi_Revada_Resume.pdf`}
           className="btn primary"
           target="_blank"
           rel="noopener noreferrer"

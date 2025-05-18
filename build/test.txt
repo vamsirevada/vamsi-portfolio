@@ -1,0 +1,83 @@
+Vamsi Revada
++91 (944) 125 4508 | revadavamsi@gmail.com | github.com/vamsirevada | linkedin.com/in/revadavamsi
+
+Software Development enthusiast and IIT Hyderabad graduate pursuing full‑time positions in tech‑driven roles.
+
+Experience
+
+Proventech Consulting Private Limited (NTT Data), Associate consultant | Hyderabad
+March 2025 ‑ Present
+• Strong expertise in Software Development Life Cycle (SDLC), 21 CFR Part 11 validation, and Change Control Management for business
+application implementation in the Life Sciences domain.
+• Proficient in Computer System Validation (CSV) and Quality Systems , including creation and execution of validation documents (URS,
+FDS, FRA, CS, IQ, OQ, PQ, RTM, TMD, PVR), as well as periodic reviews.
+• Hands‑on experience with Evalgenesis for validation and quality system operations.
+Infosys Limited, System Engineer | Bangalore
+Oct 2024 ‑ March 2025
+• Managed and optimized GxP‑compliant manufacturing systems, including SCADA, PLC, and automated machinery. Conducted sys‑
+tem validations (IQ/OQ/PQ) to meet FDA standards and supported internal and external audits.
+• Developed automation tools for system monitoring, backups, health checks, and maintenance. Provided system and network sup‑
+port, including backup/restoration and asset management for both HMI and non‑HMI devices.
+• Collaborated on system upgrades and downtime reduction initiatives. Actively explored emerging technologies to improve operational efficiency and reduce manual interventions.
+
+Coforge Limited, IT OPS Associate | Bangalore
+Nov 2022 ‑ Sept 2024
+• Manage and maintain data center systems, lab/manufacturing equipment applications (e.g., Chromeleon), backups, and preventive
+maintenance activities.
+• Ensure adherence to SOPs and QMS procedures; oversee user management, access reviews, and data restorations.
+• Execute and review Computer System Validation (CSV) activities and perform system/data recovery using Hyper‑V and SQL tools.
+Vanity India, Full stack developer | Hyderabad
+Jan 2021 ‑ July 2021
+• Built a full‑stack MERN web app (React, Node.js, MongoDB, Firebase) with JWT authentication for secure user access.
+• Deployed infrastructure on AWS EC2 and developed REST APIs with efficient data processing logic.
+• Integrated Redux for state management using middleware like redux‑thunk and redux‑promise.
+• Proficient in Git/GitHub version control and NPM for package management.
+
+Education
+
+6.0/10.0 B.Tech in Chemial Engineering, Indian Institute of Technology Hyderabad | Hyderabad, India | 2013‑17
+91.8/100 Intermediate, 12th in MPC, Narayana Junior College | Rajahmundry, Andhra Pradesh | 2010‑12
+92.7/100 Class 10th, SSC, Prathibha Public School | Rajahmundry, Andhra Pradesh | 2009‑10
+
+Achievements: 793rd Rank in IIT Advance 2013 | 6987 rank in AP Eamcet.
+
+
+Programming: Javascipt, Python, Git, Scripting (Bash), HTML, ReactJS, NodeJS, SQL, MongoDB, VectorDB, AWS
+
+Skills: CSV, Compliance Management, Incident and Error Management, Audit and Inspection Support, Risk Assessment and Stakeholder Communication.
+
+Expertise: Pharmaceutical Software Validation, Periodic Review, Backup and Restoration, Change Control Management and Training and Documentation
+
+Tools/Platforms: ValGenesis, ComplianceWire, ITSM, MySQL, SAP, TrackWise, Veeam, Commvault, Acronis, VMWare, Hyper‑V Manager, Active Directory
+
+Softwares: Chromeleon, Empower, Siemens WinCC, SCADA, Unicorn, EMS, BMS and Analytical Instrument interfaces
+
+Projects
+
+Networking Platform for Media and Entertainment | Vanity India |Jan 2021 ‑ July 2021
+
+• Developed a full‑stack social networking platform enabling seamless collaboration among media professionals with features like
+profile creation, content sharing, and messaging
+• Integrated Firebase for real‑time notifications and authentication; leveraged AWS (S3 EC2) for scalable storage and deployment.
+• Designed mobile‑first, interactive UI with ReactJS to ensure smooth user experience for creative professionals.
+
+Google Plus Code | Jan 2023 ‑ May 2023
+
+Plus Codes are digital addresses based on latitude and longitude, helping people to share locations easily
+
+• Developed a location‑mapping solution using Node.js and Google Maps APIs to generate Plus Codes for areas lacking traditional
+addresses, enabling improved accessibility for deliveries and emergency services.
+• Integrated MongoDB for secure and scalable storage of location data and user‑generated inputs, ensuring efficient retrieval and man‑
+agement of geospatial information.
+• Built RESTful APIs to convert coordinates to Plus Codes and vice versa, streamlining address generation for underserved regions and
+enhancing user location‑sharing capabilities.
+
+Certificates
+
+Machine Learning A‑Z: AI, Python and R + ChatGPT Prize [2025], Udemy
+Active Directory Administration in Windows Server 2022, Infosys
+Build Responsive Real‑World Websites with HTML and CSS, Udemy
+React The Complete Guide 2024, Udemy
+
+
+
