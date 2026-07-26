@@ -15,6 +15,7 @@ import Work from "./Work";
 import Services from "./Services";
 import ExperienceProcess from "./ExperienceProcess";
 import Skills from "./Skills";
+import GithubActivity from "./GithubActivity";
 import Stats from "./Stats";
 import Contact from "./Contact";
 import Footer from "./Footer";
@@ -285,6 +286,7 @@ export default function Portfolio() {
       <Services />
       <ExperienceProcess />
       <Skills />
+      <GithubActivity />
       <Stats statsRef={statsRef} />
       <Contact nameRef={nameRef} emailRef={emailRef} messageRef={messageRef} sendMessage={sendMessage} />
       <Footer />
