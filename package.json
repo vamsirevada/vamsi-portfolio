@@ -10,15 +10,15 @@
   },
   "dependencies": {
     "animejs": "^3.2.2",
-    "next": "15.5.22",
+    "next": "^9.3.3",
     "react": "19.1.0",
     "react-dom": "19.1.0"
   },
   "devDependencies": {
-    "@eslint/eslintrc": "^3",
+    "@eslint/eslintrc": "^0.1.0",
     "@tailwindcss/postcss": "^4",
-    "eslint": "^9",
-    "eslint-config-next": "15.5.22",
+    "eslint": "^10.8.0",
+    "eslint-config-next": "^0.2.4",
     "tailwindcss": "^4"
   }
 }
