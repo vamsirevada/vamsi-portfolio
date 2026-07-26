@@ -1,4 +1,5 @@
 import { Space_Grotesk, Manrope } from "next/font/google";
+import { Analytics } from "@vercel/analytics/next";
 import "./globals.css";
 
 const spaceGrotesk = Space_Grotesk({
@@ -58,7 +59,10 @@ export const viewport = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en" className={`${spaceGrotesk.variable} ${manrope.variable}`}>
-      <body className="antialiased bg-canvas text-ink font-body">{children}</body>
+      <body className="antialiased bg-canvas text-ink font-body">
+        {children}
+        <Analytics />
+      </body>
     </html>
   );
 }
