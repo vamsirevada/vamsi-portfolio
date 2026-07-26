@@ -1,5 +1,6 @@
 import { Space_Grotesk, Manrope } from "next/font/google";
 import { Analytics } from "@vercel/analytics/next";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 import "./globals.css";
 
 const spaceGrotesk = Space_Grotesk({
@@ -62,6 +63,7 @@ export default function RootLayout({ children }) {
       <body className="antialiased bg-canvas text-ink font-body">
         {children}
         <Analytics />
+        <SpeedInsights />
       </body>
     </html>
   );
