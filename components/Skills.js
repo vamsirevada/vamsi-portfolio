@@ -25,12 +25,12 @@ export default function Skills() {
               className="translate-y-5 opacity-0 transition-[opacity,transform] duration-700 ease-out"
             >
               <div className="mb-3.5 text-[13px] font-bold tracking-[0.05em] text-accent">{cat.cat}</div>
-              <div className="flex flex-wrap gap-3">
+              <div data-reveal-stagger="true" className="flex flex-wrap gap-3">
                 {cat.items.map((skill) => (
                   <div
                     key={skill}
                     data-cursor-hover="true"
-                    className="rounded-[14px] border border-white/8 bg-card-2 px-5 py-3.5 text-sm font-semibold text-[#d4d4d4] transition-[transform,border-color,color,box-shadow] duration-250 ease-out hover:-translate-y-1 hover:border-accent/40 hover:text-accent hover:shadow-[0_12px_30px_-10px_rgba(110,231,183,0.25)]"
+                    className="opacity-0 rounded-[14px] border border-white/8 bg-card-2 px-5 py-3.5 text-sm font-semibold text-[#d4d4d4] transition-[transform,border-color,color,box-shadow] duration-250 ease-out hover:-translate-y-1 hover:border-accent/40 hover:text-accent hover:shadow-[0_12px_30px_-10px_rgba(110,231,183,0.25)]"
                   >
                     {skill}
                   </div>

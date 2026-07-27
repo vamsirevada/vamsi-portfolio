@@ -18,14 +18,14 @@ export default function Services() {
           </h2>
         </div>
         <div
+          data-reveal-stagger="true"
           className="grid gap-px overflow-hidden rounded-[24px] border border-white/6 bg-white/6"
           style={{ gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))" }}
         >
           {services.map((s) => (
             <div
               key={s.n}
-              data-reveal="true"
-              className="translate-y-5 bg-card px-7 py-9 opacity-0 transition-[opacity,transform,background] duration-600 ease-out hover:bg-[#161616]"
+              className="translate-y-5 bg-card px-7 py-9 opacity-0 transition-colors duration-300 ease-out hover:bg-[#161616]"
             >
               <div className="mb-[18px] font-display text-[13px] font-bold text-accent">{s.n}</div>
               <h4 className="m-0 mb-2.5 font-display text-lg font-semibold text-ink">{s.title}</h4>

@@ -1,6 +1,7 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import anime from "animejs";
 import SectionEyebrow from "./SectionEyebrow";
 import { site } from "@/lib/content";
 
@@ -41,6 +42,8 @@ function monthLabelsFor(weeks) {
 
 export default function GithubActivity() {
   const [state, setState] = useState({ status: "loading", total: 0, weeks: skeletonWeeks() });
+  const gridRef = useRef(null);
+  const animatedRef = useRef(false);
 
   useEffect(() => {
     let cancelled = false;
@@ -61,6 +64,31 @@ export default function GithubActivity() {
       cancelled = true;
     };
   }, []);
+
+  useEffect(() => {
+    if (state.status !== "ready" || !gridRef.current || animatedRef.current) return;
+    animatedRef.current = true;
+    const cells = gridRef.current.querySelectorAll("[data-gh-cell]");
+    const reduced =
+      typeof window !== "undefined" &&
+      window.matchMedia &&
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (reduced) {
+      cells.forEach((c) => {
+        c.style.opacity = 1;
+        c.style.transform = "scale(1)";
+      });
+      return;
+    }
+    anime({
+      targets: cells,
+      opacity: [0, 1],
+      scale: [0.35, 1],
+      delay: anime.stagger(4, { grid: [7, state.weeks.length], from: "center" }),
+      duration: 500,
+      easing: "easeOutQuad",
+    });
+  }, [state.status, state.weeks.length]);
 
   const months = monthLabelsFor(state.weeks);
   const gridWidth = state.weeks.length * CELL + (state.weeks.length - 1) * GAP;
@@ -132,6 +160,7 @@ export default function GithubActivity() {
                 </div>
 
                 <div
+                  ref={gridRef}
                   className="grid"
                   style={{
                     gridTemplateColumns: `repeat(${state.weeks.length}, ${CELL}px)`,
@@ -144,8 +173,9 @@ export default function GithubActivity() {
                     w.days.map((d, di) => (
                       <div
                         key={`${wi}-${di}`}
+                        data-gh-cell="true"
                         title={d.date ? `${d.count} contribution${d.count === 1 ? "" : "s"} on ${d.date}` : undefined}
-                        className="rounded-[3px]"
+                        className="rounded-[3px] opacity-0"
                         style={{
                           width: CELL,
                           height: CELL,

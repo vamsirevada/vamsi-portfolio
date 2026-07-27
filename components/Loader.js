@@ -8,8 +8,17 @@ export default function Loader({ loaded }) {
         pointerEvents: loaded ? "none" : "auto",
       }}
     >
-      <div className="overflow-hidden font-display text-[15px] uppercase tracking-[0.3em] text-ink-2">
-        <span className="inline-block text-ink">Vamsi Revada</span>
+      <div className="overflow-hidden font-display text-[15px] uppercase tracking-[0.3em] text-ink">
+        {"Vamsi Revada".split("").map((ch, i) => (
+          <span
+            key={i}
+            data-loader-letter="true"
+            className="inline-block opacity-0"
+            style={{ transform: "translateY(14px)" }}
+          >
+            {ch === " " ? " " : ch}
+          </span>
+        ))}
       </div>
       <div className="h-[2px] w-[160px] overflow-hidden rounded-full bg-white/8">
         <div

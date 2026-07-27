@@ -41,12 +41,12 @@ export default function About() {
             ))}
           </div>
 
-          <div className="flex flex-wrap gap-2.5">
+          <div data-reveal-stagger="true" className="flex flex-wrap gap-2.5">
             {techStack.map((t) => (
               <span
                 key={t}
                 data-cursor-hover="true"
-                className="rounded-full border border-white/8 bg-card px-4 py-2.25 text-[13px] text-[#d4d4d4] transition-[transform,border-color,color] duration-250 ease-out hover:-translate-y-0.75 hover:border-accent/50 hover:text-accent"
+                className="opacity-0 rounded-full border border-white/8 bg-card px-4 py-2.25 text-[13px] text-[#d4d4d4] transition-[transform,border-color,color] duration-250 ease-out hover:-translate-y-0.75 hover:border-accent/50 hover:text-accent"
               >
                 {t}
               </span>

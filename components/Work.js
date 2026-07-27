@@ -51,9 +51,9 @@ export default function Work() {
                   {proj.outcome}
                 </div>
               </div>
-              <div className="flex flex-wrap gap-2">
+              <div data-reveal-stagger="true" className="flex flex-wrap gap-2">
                 {proj.tech.map((t) => (
-                  <span key={t} className="rounded-full bg-white/5 px-3 py-1.5 text-xs text-[#d4d4d4]">
+                  <span key={t} className="opacity-0 rounded-full bg-white/5 px-3 py-1.5 text-xs text-[#d4d4d4]">
                     {t}
                   </span>
                 ))}
@@ -71,13 +71,16 @@ export default function Work() {
         ))}
       </div>
 
-      <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3" style={{ gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))" }}>
+      <div
+        data-reveal-stagger="true"
+        className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3"
+        style={{ gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))" }}
+      >
         {otherProjects.map((proj) => (
           <div
             key={proj.name}
-            data-reveal="true"
             data-tilt="true"
-            className="flex translate-y-[30px] flex-col overflow-hidden rounded-[20px] border border-white/8 bg-card-2 opacity-0 transition-[opacity,transform] duration-700 ease-out"
+            className="flex translate-y-[30px] flex-col overflow-hidden rounded-[20px] border border-white/8 bg-card-2 opacity-0"
           >
             <div style={{ aspectRatio: "16/10" }}>
               <ImagePlaceholder label={proj.imgPlaceholder} src={proj.img} />

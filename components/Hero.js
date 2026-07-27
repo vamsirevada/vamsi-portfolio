@@ -65,8 +65,11 @@ export default function Hero({ blob1Ref, blob2Ref, blob3Ref, heroSubRef, heroCta
       ))}
 
       <div className="relative z-3 flex max-w-[900px] flex-col items-center gap-7">
-        <div className="flex items-center gap-2.5 rounded-full border border-white/10 bg-white/3 px-4 py-2">
-          <span className="h-[7px] w-[7px] rounded-full bg-accent shadow-[0_0_10px_#6EE7B7]" />
+        <div
+          data-hero-badge="true"
+          className="flex items-center gap-2.5 rounded-full border border-white/10 bg-white/3 px-4 py-2 opacity-0"
+        >
+          <span data-status-dot="true" className="h-[7px] w-[7px] rounded-full bg-accent shadow-[0_0_10px_#6EE7B7]" />
           <span className="text-[13px] tracking-[0.02em] text-ink-2">Available for freelance projects</span>
         </div>
 
@@ -103,16 +106,16 @@ export default function Hero({ blob1Ref, blob2Ref, blob3Ref, heroSubRef, heroCta
 
         <p
           ref={heroSubRef}
-          className="m-0 max-w-[560px] text-[clamp(16px,1.6vw,19px)] leading-[1.7] text-ink-2 opacity-0 transition-[opacity,transform] duration-800 ease-out"
-          style={{ transform: "translateY(16px)", transitionDelay: "0.2s" }}
+          className="m-0 max-w-[560px] text-[clamp(16px,1.6vw,19px)] leading-[1.7] text-ink-2 opacity-0"
+          style={{ transform: "translateY(16px)" }}
         >
           I build premium web and mobile applications that scale — from real-time platforms to AI-powered products.
         </p>
 
         <div
           ref={heroCtaRef}
-          className="flex flex-wrap justify-center gap-4 opacity-0 transition-[opacity,transform] duration-800 ease-out"
-          style={{ transform: "translateY(16px)", transitionDelay: "0.4s" }}
+          className="flex flex-wrap justify-center gap-4 opacity-0"
+          style={{ transform: "translateY(16px)" }}
         >
           <a
             href="#work"

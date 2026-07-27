@@ -63,34 +63,81 @@ export default function Portfolio() {
       window.matchMedia &&
       window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
+    if (!reducedRef.current) {
+      anime({
+        targets: "[data-loader-letter]",
+        opacity: [0, 1],
+        translateY: [14, 0],
+        delay: anime.stagger(35),
+        duration: 600,
+        easing: "easeOutExpo",
+      });
+    } else {
+      document.querySelectorAll("[data-loader-letter]").forEach((el) => {
+        el.style.opacity = 1;
+        el.style.transform = "translateY(0)";
+      });
+    }
+
     const revealHero = () => {
+      const badge = document.querySelector("[data-hero-badge]");
       if (!reducedRef.current) {
-        anime({
-          targets: "[data-hero-letter]",
-          opacity: [0, 1],
-          translateY: [40, 0],
-          delay: anime.stagger(22),
-          duration: 900,
-          easing: "easeOutExpo",
-        });
+        const tl = anime.timeline({ easing: "easeOutExpo" });
+        if (badge) {
+          tl.add({
+            targets: badge,
+            opacity: [0, 1],
+            scale: [0.85, 1],
+            duration: 500,
+          });
+        }
+        tl.add(
+          {
+            targets: "[data-hero-letter]",
+            opacity: [0, 1],
+            translateY: [40, 0],
+            delay: anime.stagger(22),
+            duration: 900,
+          },
+          badge ? "-=250" : 0
+        );
+        if (heroSubRef.current) {
+          tl.add(
+            {
+              targets: heroSubRef.current,
+              opacity: [0, 1],
+              translateY: [16, 0],
+              duration: 700,
+            },
+            "-=400"
+          );
+        }
+        if (heroCtaRef.current) {
+          tl.add(
+            {
+              targets: heroCtaRef.current,
+              opacity: [0, 1],
+              translateY: [16, 0],
+              duration: 700,
+            },
+            "-=350"
+          );
+        }
       } else {
+        if (badge) badge.style.opacity = 1;
         document.querySelectorAll("[data-hero-letter]").forEach((el) => {
           el.style.opacity = 1;
           el.style.transform = "translateY(0)";
         });
-      }
-      setTimeout(() => {
         if (heroSubRef.current) {
           heroSubRef.current.style.opacity = 1;
           heroSubRef.current.style.transform = "translateY(0)";
         }
-      }, 500);
-      setTimeout(() => {
         if (heroCtaRef.current) {
           heroCtaRef.current.style.opacity = 1;
           heroCtaRef.current.style.transform = "translateY(0)";
         }
-      }, 750);
+      }
     };
 
     const loadedTimer = setTimeout(() => setLoaded(true), 1400);
@@ -123,26 +170,44 @@ export default function Portfolio() {
         blob3Ref.current.style.transform = `translate(${dx * depth * 0.6}px,${-dy * depth * 0.6}px)`;
     };
 
+    const ringScale = { v: 1 };
     const tick = () => {
       ringRef.current.x += (mouseRef.current.x - ringRef.current.x) * 0.18;
       ringRef.current.y += (mouseRef.current.y - ringRef.current.y) * 0.18;
       if (cursorRingRef.current) {
-        cursorRingRef.current.style.transform = `translate(${ringRef.current.x - 18}px,${ringRef.current.y - 18}px)`;
+        cursorRingRef.current.style.transform = `translate(${ringRef.current.x - 18}px,${ringRef.current.y - 18}px) scale(${ringScale.v})`;
       }
       rafRef.current = requestAnimationFrame(tick);
     };
 
+    const onMouseDown = () => {
+      anime({ targets: ringScale, v: 0.7, duration: 200, easing: "easeOutQuad" });
+    };
+    const onMouseUp = () => {
+      anime({ targets: ringScale, v: 1, duration: 500, easing: "easeOutElastic(1, .6)" });
+    };
+
     const magneticCleanups = [];
+    const snapbackAnims = new Map();
     const setupMagnetic = () => {
       document.querySelectorAll("[data-magnetic]").forEach((el) => {
         const onMove = (ev) => {
+          const running = snapbackAnims.get(el);
+          if (running) running.pause();
           const r = el.getBoundingClientRect();
           const x = ev.clientX - r.left - r.width / 2;
           const y = ev.clientY - r.top - r.height / 2;
           el.style.transform = `translate(${x * 0.3}px,${y * 0.3}px)`;
         };
         const onLeave = () => {
-          el.style.transform = "translate(0,0)";
+          const inst = anime({
+            targets: el,
+            translateX: 0,
+            translateY: 0,
+            duration: 900,
+            easing: "easeOutElastic(1, .5)",
+          });
+          snapbackAnims.set(el, inst);
         };
         el.addEventListener("mousemove", onMove);
         el.addEventListener("mouseleave", onLeave);
@@ -202,10 +267,25 @@ export default function Portfolio() {
 
     if (!reducedRef.current) {
       window.addEventListener("mousemove", onMouseMove);
+      window.addEventListener("mousedown", onMouseDown);
+      window.addEventListener("mouseup", onMouseUp);
       rafRef.current = requestAnimationFrame(tick);
       setupMagnetic();
       setupTilt();
       setupCursorHover();
+
+      const statusDot = document.querySelector("[data-status-dot]");
+      if (statusDot) {
+        anime({
+          targets: statusDot,
+          scale: [1, 1.6],
+          opacity: [1, 0.4],
+          duration: 1400,
+          easing: "easeInOutSine",
+          direction: "alternate",
+          loop: true,
+        });
+      }
     } else {
       if (cursorDotRef.current) cursorDotRef.current.style.display = "none";
       if (cursorRingRef.current) cursorRingRef.current.style.display = "none";
@@ -227,6 +307,35 @@ export default function Portfolio() {
     );
     document.querySelectorAll("[data-reveal]").forEach((el) => io.observe(el));
 
+    const groupIo = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            const el = entry.target;
+            const children = Array.from(el.children);
+            if (reducedRef.current) {
+              children.forEach((c) => {
+                c.style.opacity = 1;
+                c.style.transform = "none";
+              });
+            } else {
+              anime({
+                targets: children,
+                opacity: [0, 1],
+                translateY: [22, 0],
+                delay: anime.stagger(70),
+                duration: 650,
+                easing: "easeOutExpo",
+              });
+            }
+            groupIo.unobserve(el);
+          }
+        });
+      },
+      { threshold: 0.15 }
+    );
+    document.querySelectorAll("[data-reveal-stagger]").forEach((el) => groupIo.observe(el));
+
     const ioStats = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
@@ -234,15 +343,17 @@ export default function Portfolio() {
             countersDoneRef.current = true;
             document.querySelectorAll("[data-counter]").forEach((el) => {
               const target = parseInt(el.getAttribute("data-target"), 10) || 0;
-              const start = performance.now();
-              const dur = 1500;
-              const step = (now) => {
-                const p = Math.min((now - start) / dur, 1);
-                const eased = 1 - Math.pow(1 - p, 3);
-                el.textContent = Math.round(eased * target);
-                if (p < 1) requestAnimationFrame(step);
-              };
-              requestAnimationFrame(step);
+              const proxy = { val: 0 };
+              anime({
+                targets: proxy,
+                val: target,
+                round: 1,
+                duration: 1600,
+                easing: "easeOutExpo",
+                update: () => {
+                  el.textContent = proxy.val;
+                },
+              });
             });
             ioStats.disconnect();
           }
@@ -257,11 +368,14 @@ export default function Portfolio() {
       clearTimeout(revealTimer);
       window.removeEventListener("scroll", onScroll);
       window.removeEventListener("mousemove", onMouseMove);
+      window.removeEventListener("mousedown", onMouseDown);
+      window.removeEventListener("mouseup", onMouseUp);
       if (rafRef.current) cancelAnimationFrame(rafRef.current);
       magneticCleanups.forEach((fn) => fn());
       tiltCleanups.forEach((fn) => fn());
       hoverCleanups.forEach((fn) => fn());
       io.disconnect();
+      groupIo.disconnect();
       ioStats.disconnect();
     };
   }, []);
