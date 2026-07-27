@@ -25,7 +25,7 @@ export default function Work() {
             key={proj.name}
             data-reveal="true"
             data-tilt="true"
-            className="grid translate-y-[30px] grid-cols-1 overflow-hidden rounded-[24px] border border-white/8 bg-card-2 opacity-0 transition-[opacity,transform,box-shadow] duration-300 ease-out md:grid-cols-2"
+            className="group grid translate-y-[30px] grid-cols-1 overflow-hidden rounded-[24px] border border-white/8 bg-card-2 opacity-0 transition-[opacity,transform,box-shadow] duration-300 ease-out md:grid-cols-2"
           >
             <div className="relative" style={{ aspectRatio: "16/11" }}>
               <ImagePlaceholder label={proj.imgPlaceholder} src={proj.img} />
@@ -81,7 +81,7 @@ export default function Work() {
           <div
             key={proj.name}
             data-tilt="true"
-            className="flex translate-y-[30px] flex-col overflow-hidden rounded-[20px] border border-white/8 bg-card-2 opacity-0"
+            className="group flex translate-y-[30px] flex-col overflow-hidden rounded-[20px] border border-white/8 bg-card-2 opacity-0"
           >
             <div style={{ aspectRatio: "16/10" }}>
               <ImagePlaceholder label={proj.imgPlaceholder} src={proj.img} />

@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { site } from "@/lib/content";
 import { IconArrowRight } from "./Icons";
+import Shine from "./Shine";
 
 const mk = (s, accentLast) =>
   s.split("").map((c, i) => ({
@@ -122,10 +123,13 @@ export default function Hero({ blob1Ref, blob2Ref, blob3Ref, heroSubRef, heroCta
             href="#work"
             data-magnetic="true"
             data-cursor-hover="true"
-            className="inline-flex items-center gap-2 rounded-full bg-accent px-8 py-4 text-[15px] font-bold text-canvas shadow-[0_20px_50px_-12px_rgba(110,231,183,0.4)]"
+            className="group relative isolate inline-flex items-center overflow-hidden rounded-full bg-accent px-8 py-4 text-[15px] font-bold text-canvas shadow-[0_20px_50px_-12px_rgba(110,231,183,0.4)]"
           >
-            View Projects
-            <IconArrowRight className="h-4 w-4" />
+            <span className="relative z-10 inline-flex items-center gap-2">
+              View Projects
+              <IconArrowRight className="h-4 w-4" />
+            </span>
+            <Shine />
           </a>
           <a
             href={site.calendlyUrl}

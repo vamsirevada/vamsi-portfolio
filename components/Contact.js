@@ -1,6 +1,7 @@
 import SectionEyebrow from "./SectionEyebrow";
 import { site } from "@/lib/content";
 import { IconArrowUpRight, IconDownload } from "./Icons";
+import Shine from "./Shine";
 
 const links = (site) => [
   { label: "Book a Call", href: site.calendlyUrl, external: true, icon: "arrow" },
@@ -83,9 +84,10 @@ export default function Contact({ nameRef, emailRef, messageRef, honeypotRef, se
               disabled={sendStatus === "sending"}
               data-magnetic="true"
               data-cursor-hover="true"
-              className="mt-1.5 cursor-pointer rounded-full border-none bg-accent p-4 text-[15px] font-bold text-canvas disabled:cursor-not-allowed disabled:opacity-70"
+              className="group relative isolate mt-1.5 cursor-pointer overflow-hidden rounded-full border-none bg-accent p-4 text-[15px] font-bold text-canvas disabled:cursor-not-allowed disabled:opacity-70"
             >
-              {sendStatus === "sending" ? "Sending..." : "Send Message"}
+              <span className="relative z-10">{sendStatus === "sending" ? "Sending..." : "Send Message"}</span>
+              <Shine />
             </button>
             {statusMessage && (
               <p className={`text-sm ${statusMessage.tone === "error" ? "text-red-400" : "text-accent"}`}>

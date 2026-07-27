@@ -9,7 +9,7 @@ export default function ImagePlaceholder({ label, src, className = "" }) {
           alt={label}
           fill
           sizes="(min-width: 768px) 50vw, 100vw"
-          className="object-cover object-top"
+          className="object-cover object-top transition-transform duration-500 ease-out group-hover:scale-[1.04]"
         />
       </div>
     );
@@ -17,7 +17,7 @@ export default function ImagePlaceholder({ label, src, className = "" }) {
 
   return (
     <div
-      className={`relative flex h-full w-full items-center justify-center overflow-hidden bg-card ${className}`}
+      className={`relative flex h-full w-full items-center justify-center overflow-hidden bg-card transition-transform duration-500 ease-out group-hover:scale-[1.04] ${className}`}
       style={{
         backgroundImage:
           "repeating-linear-gradient(135deg, rgba(255,255,255,0.05) 0px, rgba(255,255,255,0.05) 1px, transparent 1px, transparent 14px)",

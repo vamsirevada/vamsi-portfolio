@@ -359,6 +359,40 @@ export default function Portfolio() {
     );
     document.querySelectorAll("[data-reveal-stagger]").forEach((el) => groupIo.observe(el));
 
+    const setActiveNav = (id) => {
+      document.querySelectorAll("[data-nav-link]").forEach((a) => {
+        const isActive = a.getAttribute("data-nav-link") === id;
+        a.classList.toggle("text-ink", isActive);
+        a.classList.toggle("text-ink-2", !isActive);
+        const underline = a.querySelector("[data-nav-underline]");
+        if (underline) {
+          if (reducedRef.current) {
+            underline.style.transform = isActive ? "scaleX(1)" : "scaleX(0)";
+          } else {
+            anime({
+              targets: underline,
+              scaleX: isActive ? 1 : 0,
+              duration: 300,
+              easing: "easeOutQuad",
+            });
+          }
+        }
+      });
+    };
+
+    const navIo = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) setActiveNav(entry.target.id);
+        });
+      },
+      { rootMargin: "-45% 0px -50% 0px", threshold: 0 }
+    );
+    ["about", "work", "services", "process", "contact"]
+      .map((id) => document.getElementById(id))
+      .filter(Boolean)
+      .forEach((el) => navIo.observe(el));
+
     const ioStats = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
@@ -399,6 +433,7 @@ export default function Portfolio() {
       hoverCleanups.forEach((fn) => fn());
       io.disconnect();
       groupIo.disconnect();
+      navIo.disconnect();
       ioStats.disconnect();
     };
   }, []);

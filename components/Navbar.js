@@ -1,5 +1,6 @@
 import { navLinks, site } from "@/lib/content";
 import { IconMenu, IconClose } from "./Icons";
+import Shine from "./Shine";
 
 export default function Navbar({ navRef, menuOpen, toggleMenu }) {
   return (
@@ -22,9 +23,14 @@ export default function Navbar({ navRef, menuOpen, toggleMenu }) {
               key={link.href}
               href={link.href}
               data-cursor-hover="true"
-              className="text-sm font-medium text-ink-2 transition-colors hover:text-ink"
+              data-nav-link={link.href.slice(1)}
+              className="relative inline-block text-sm font-medium text-ink-2 transition-colors hover:text-ink"
             >
               {link.label}
+              <span
+                data-nav-underline="true"
+                className="absolute -bottom-1 left-0 h-px w-full origin-left scale-x-0 bg-accent"
+              />
             </a>
           ))}
         </div>
@@ -36,9 +42,10 @@ export default function Navbar({ navRef, menuOpen, toggleMenu }) {
             rel="noopener"
             data-magnetic="true"
             data-cursor-hover="true"
-            className="inline-flex items-center rounded-full bg-accent px-[22px] py-[10px] text-[13px] font-bold tracking-[-0.01em] text-canvas"
+            className="group relative isolate inline-flex items-center overflow-hidden rounded-full bg-accent px-[22px] py-[10px] text-[13px] font-bold tracking-[-0.01em] text-canvas"
           >
-            Book a Call
+            <span className="relative z-10">Book a Call</span>
+            <Shine />
           </a>
           <button
             onClick={toggleMenu}
@@ -68,9 +75,10 @@ export default function Navbar({ navRef, menuOpen, toggleMenu }) {
             target="_blank"
             rel="noopener"
             onClick={toggleMenu}
-            className="mt-3 rounded-full bg-accent px-8 py-3.5 font-bold text-canvas"
+            className="group relative isolate mt-3 overflow-hidden rounded-full bg-accent px-8 py-3.5 font-bold text-canvas"
           >
-            Book a Call
+            <span className="relative z-10">Book a Call</span>
+            <Shine />
           </a>
         </div>
       )}
