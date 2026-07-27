@@ -65,9 +65,6 @@ export default function Work() {
                 <a href={proj.github} target="_blank" rel="noopener" data-cursor-hover="true" className="text-sm font-semibold text-ink">
                   GitHub ↗
                 </a>
-                <a href={proj.caseStudy} data-cursor-hover="true" className="text-sm font-semibold text-accent">
-                  Case Study →
-                </a>
               </div>
             </div>
           </div>
