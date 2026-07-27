@@ -27,7 +27,7 @@ export default function Work() {
             className="grid translate-y-[30px] grid-cols-1 overflow-hidden rounded-[24px] border border-white/8 bg-card-2 opacity-0 transition-[opacity,transform,box-shadow] duration-300 ease-out md:grid-cols-2"
           >
             <div className="relative" style={{ aspectRatio: "16/11" }}>
-              <ImagePlaceholder label={proj.imgPlaceholder} />
+              <ImagePlaceholder label={proj.imgPlaceholder} src={proj.img} />
             </div>
             <div className="flex flex-col justify-center gap-[18px] p-[clamp(28px,3vw,48px)]">
               <div>
@@ -83,7 +83,7 @@ export default function Work() {
             className="flex translate-y-[30px] flex-col overflow-hidden rounded-[20px] border border-white/8 bg-card-2 opacity-0 transition-[opacity,transform] duration-700 ease-out"
           >
             <div style={{ aspectRatio: "16/10" }}>
-              <ImagePlaceholder label={proj.imgPlaceholder} />
+              <ImagePlaceholder label={proj.imgPlaceholder} src={proj.img} />
             </div>
             <div className="flex flex-1 flex-col gap-2.5 p-6">
               <h4 className="m-0 font-display text-lg font-semibold text-ink">{proj.name}</h4>

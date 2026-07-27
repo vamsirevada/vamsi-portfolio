@@ -1,4 +1,20 @@
-export default function ImagePlaceholder({ label, className = "" }) {
+import Image from "next/image";
+
+export default function ImagePlaceholder({ label, src, className = "" }) {
+  if (src) {
+    return (
+      <div className={`relative h-full w-full overflow-hidden bg-card ${className}`}>
+        <Image
+          src={src}
+          alt={label}
+          fill
+          sizes="(min-width: 768px) 50vw, 100vw"
+          className="object-cover object-top"
+        />
+      </div>
+    );
+  }
+
   return (
     <div
       className={`relative flex h-full w-full items-center justify-center overflow-hidden bg-card ${className}`}
