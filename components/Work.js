@@ -1,5 +1,6 @@
 import SectionEyebrow from "./SectionEyebrow";
 import ImagePlaceholder from "./ImagePlaceholder";
+import { IconArrowUpRight } from "./Icons";
 import { featuredProjects, otherProjects } from "@/lib/content";
 
 export default function Work() {
@@ -59,11 +60,11 @@ export default function Work() {
                 ))}
               </div>
               <div className="mt-1.5 flex gap-5">
-                <a href={proj.demo} target="_blank" rel="noopener" data-cursor-hover="true" className="text-sm font-semibold text-ink">
-                  Live Demo ↗
+                <a href={proj.demo} target="_blank" rel="noopener" data-cursor-hover="true" className="inline-flex items-center gap-1 text-sm font-semibold text-ink">
+                  Live Demo <IconArrowUpRight className="h-3.5 w-3.5" />
                 </a>
-                <a href={proj.github} target="_blank" rel="noopener" data-cursor-hover="true" className="text-sm font-semibold text-ink">
-                  GitHub ↗
+                <a href={proj.github} target="_blank" rel="noopener" data-cursor-hover="true" className="inline-flex items-center gap-1 text-sm font-semibold text-ink">
+                  GitHub <IconArrowUpRight className="h-3.5 w-3.5" />
                 </a>
               </div>
             </div>

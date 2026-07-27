@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { site } from "@/lib/content";
+import { IconArrowRight } from "./Icons";
 
 const mk = (s, accentLast) =>
   s.split("").map((c, i) => ({
@@ -123,7 +124,8 @@ export default function Hero({ blob1Ref, blob2Ref, blob3Ref, heroSubRef, heroCta
             data-cursor-hover="true"
             className="inline-flex items-center gap-2 rounded-full bg-accent px-8 py-4 text-[15px] font-bold text-canvas shadow-[0_20px_50px_-12px_rgba(110,231,183,0.4)]"
           >
-            View Projects →
+            View Projects
+            <IconArrowRight className="h-4 w-4" />
           </a>
           <a
             href={site.calendlyUrl}

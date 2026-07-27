@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import anime from "animejs";
 import SectionEyebrow from "./SectionEyebrow";
+import { IconArrowUpRight } from "./Icons";
 import { site } from "@/lib/content";
 
 const CELL = 11;
@@ -119,9 +120,10 @@ export default function GithubActivity() {
             target="_blank"
             rel="noopener"
             data-cursor-hover="true"
-            className="text-[13px] font-semibold text-accent"
+            className="inline-flex items-center gap-1 text-[13px] font-semibold text-accent"
           >
-            @{site.githubUsername} ↗
+            @{site.githubUsername}
+            <IconArrowUpRight className="h-3.5 w-3.5" />
           </a>
         </div>
 

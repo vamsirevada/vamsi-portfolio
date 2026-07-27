@@ -1,12 +1,13 @@
 import SectionEyebrow from "./SectionEyebrow";
 import { site } from "@/lib/content";
+import { IconArrowUpRight, IconDownload } from "./Icons";
 
 const links = (site) => [
-  { label: "Book a Call", href: site.calendlyUrl, external: true, meta: "↗" },
-  { label: "Email", href: `mailto:${site.email}`, external: false, meta: site.email, metaMuted: true },
-  { label: "LinkedIn", href: site.linkedinUrl, external: true, meta: "↗" },
-  { label: "GitHub", href: site.githubUrl, external: true, meta: "↗" },
-  { label: "Resume", href: site.resumeUrl, external: true, meta: "↓" },
+  { label: "Book a Call", href: site.calendlyUrl, external: true, icon: "arrow" },
+  { label: "Email", href: `mailto:${site.email}`, external: false, text: site.email },
+  { label: "LinkedIn", href: site.linkedinUrl, external: true, icon: "arrow" },
+  { label: "GitHub", href: site.githubUrl, external: true, icon: "arrow" },
+  { label: "Resume", href: site.resumeUrl, external: true, icon: "download" },
 ];
 
 export default function Contact({ nameRef, emailRef, messageRef, sendMessage }) {
@@ -84,7 +85,13 @@ export default function Contact({ nameRef, emailRef, messageRef, sendMessage }) 
               className="flex items-center justify-between rounded-[18px] border border-white/8 bg-card-2 px-6 py-[22px] text-ink"
             >
               <span className="text-[15px] font-semibold">{l.label}</span>
-              <span className={`${l.metaMuted ? "text-[13px] text-ink-3" : "text-accent"}`}>{l.meta}</span>
+              {l.text ? (
+                <span className="text-[13px] text-ink-3">{l.text}</span>
+              ) : l.icon === "download" ? (
+                <IconDownload className="h-4 w-4 text-accent" />
+              ) : (
+                <IconArrowUpRight className="h-4 w-4 text-accent" />
+              )}
             </a>
           ))}
         </div>

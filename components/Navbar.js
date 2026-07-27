@@ -1,4 +1,5 @@
 import { navLinks, site } from "@/lib/content";
+import { IconMenu, IconClose } from "./Icons";
 
 export default function Navbar({ navRef, menuOpen, toggleMenu }) {
   return (
@@ -41,11 +42,11 @@ export default function Navbar({ navRef, menuOpen, toggleMenu }) {
           </a>
           <button
             onClick={toggleMenu}
-            aria-label="Toggle menu"
+            aria-label={menuOpen ? "Close menu" : "Open menu"}
             data-cursor-hover="true"
-            className="flex h-10 w-10 items-center justify-center rounded-[10px] border border-white/10 bg-white/3 text-lg text-ink min-[860px]:hidden"
+            className="flex h-10 w-10 items-center justify-center rounded-[10px] border border-white/10 bg-white/3 text-ink min-[860px]:hidden"
           >
-            ☰
+            {menuOpen ? <IconClose className="h-5 w-5" /> : <IconMenu className="h-5 w-5" />}
           </button>
         </div>
       </nav>
