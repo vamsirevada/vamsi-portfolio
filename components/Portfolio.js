@@ -20,8 +20,6 @@ import Stats from "./Stats";
 import Contact from "./Contact";
 import Footer from "./Footer";
 
-import { site } from "@/lib/content";
-
 export default function Portfolio() {
   const cursorDotRef = useRef(null);
   const cursorRingRef = useRef(null);
@@ -36,9 +34,11 @@ export default function Portfolio() {
   const nameRef = useRef(null);
   const emailRef = useRef(null);
   const messageRef = useRef(null);
+  const honeypotRef = useRef(null);
 
   const [menuOpen, setMenuOpen] = useState(false);
   const [loaded, setLoaded] = useState(false);
+  const [sendStatus, setSendStatus] = useState("idle");
 
   const reducedRef = useRef(false);
   const mouseRef = useRef({ x: 0, y: 0 });
@@ -48,13 +48,36 @@ export default function Portfolio() {
 
   const toggleMenu = useCallback(() => setMenuOpen((v) => !v), []);
 
-  const sendMessage = useCallback(() => {
-    const name = nameRef.current ? nameRef.current.value : "";
-    const email = emailRef.current ? emailRef.current.value : "";
-    const msg = messageRef.current ? messageRef.current.value : "";
-    const subject = encodeURIComponent("Project inquiry from " + (name || "website"));
-    const body = encodeURIComponent((msg || "") + "\n\n— " + (name || "") + " (" + (email || "") + ")");
-    window.location.href = `mailto:${site.email}?subject=${subject}&body=${body}`;
+  const sendMessage = useCallback(async () => {
+    const name = nameRef.current ? nameRef.current.value.trim() : "";
+    const email = emailRef.current ? emailRef.current.value.trim() : "";
+    const message = messageRef.current ? messageRef.current.value.trim() : "";
+    const company = honeypotRef.current ? honeypotRef.current.value : "";
+
+    if (!name || !email || !message) {
+      setSendStatus("validation");
+      return;
+    }
+
+    setSendStatus("sending");
+    try {
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name, email, message, company }),
+      });
+      const data = await res.json();
+      if (!res.ok || !data.ok) {
+        setSendStatus(data.reason === "not_configured" ? "not_configured" : "error");
+        return;
+      }
+      setSendStatus("success");
+      if (nameRef.current) nameRef.current.value = "";
+      if (emailRef.current) emailRef.current.value = "";
+      if (messageRef.current) messageRef.current.value = "";
+    } catch {
+      setSendStatus("error");
+    }
   }, []);
 
   useEffect(() => {
@@ -402,7 +425,14 @@ export default function Portfolio() {
       <Skills />
       <GithubActivity />
       <Stats statsRef={statsRef} />
-      <Contact nameRef={nameRef} emailRef={emailRef} messageRef={messageRef} sendMessage={sendMessage} />
+      <Contact
+        nameRef={nameRef}
+        emailRef={emailRef}
+        messageRef={messageRef}
+        honeypotRef={honeypotRef}
+        sendMessage={sendMessage}
+        sendStatus={sendStatus}
+      />
       <Footer />
     </div>
   );

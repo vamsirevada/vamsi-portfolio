@@ -44,6 +44,22 @@ To enable it:
 
 In production, add the same `GITHUB_TOKEN` environment variable in your host's project settings (e.g. Vercel → Project → Settings → Environment Variables). Without a token configured, that section shows a quiet fallback message instead of erroring.
 
+## Contact form
+
+The contact form (`components/Contact.js`) sends real email via a server route (`app/api/contact/route.js`) using [Resend](https://resend.com), instead of relying on the visitor's own mail client.
+
+To enable it:
+
+1. Sign up at [resend.com](https://resend.com) and create an API key.
+2. Copy `.env.example` to `.env.local` and paste the key into `RESEND_API_KEY`.
+3. Restart the dev server.
+
+Without a verified domain, mail sends from Resend's shared `onboarding@resend.dev` address — delivery works, but it isn't branded. Once you verify your own domain in the Resend dashboard, set `CONTACT_FROM_EMAIL` (e.g. `Vamsi Revada <hello@vamsirevada.com>`) so mail sends from your own address instead.
+
+In production, add `RESEND_API_KEY` (and `CONTACT_FROM_EMAIL` once you have a verified domain) as environment variables in your host's project settings. Without `RESEND_API_KEY` configured, the form shows a friendly fallback message pointing to a direct `mailto:` link instead of erroring.
+
+The form also includes a hidden honeypot field to filter out basic spam bots.
+
 ## Build
 
 ```bash

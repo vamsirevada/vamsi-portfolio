@@ -10,7 +10,15 @@ const links = (site) => [
   { label: "Resume", href: site.resumeUrl, external: true, icon: "download" },
 ];
 
-export default function Contact({ nameRef, emailRef, messageRef, sendMessage }) {
+const STATUS_MESSAGES = {
+  validation: { tone: "error", text: "Please fill in all fields." },
+  error: { tone: "error", text: `Something went wrong — email me directly at ${site.email} instead.` },
+  not_configured: { tone: "error", text: `Direct sending isn't set up yet — email me directly at ${site.email} instead.` },
+  success: { tone: "accent", text: "Thanks — I'll get back to you soon." },
+};
+
+export default function Contact({ nameRef, emailRef, messageRef, honeypotRef, sendMessage, sendStatus }) {
+  const statusMessage = STATUS_MESSAGES[sendStatus];
   return (
     <section
       id="contact"
@@ -32,6 +40,16 @@ export default function Contact({ nameRef, emailRef, messageRef, sendMessage }) 
           className="translate-y-5 rounded-[24px] border border-white/8 bg-card-2 p-[clamp(24px,3vw,36px)] opacity-0 transition-[opacity,transform] duration-800 ease-out [transition-delay:0.1s]"
         >
           <div className="flex flex-col gap-[18px]">
+            <input
+              ref={honeypotRef}
+              type="text"
+              name="company"
+              tabIndex={-1}
+              autoComplete="off"
+              aria-hidden="true"
+              className="absolute h-0 w-0 opacity-0"
+              style={{ left: "-9999px" }}
+            />
             <div className="flex flex-col gap-2">
               <label className="text-[13px] text-ink-3">Name</label>
               <input
@@ -62,12 +80,18 @@ export default function Contact({ nameRef, emailRef, messageRef, sendMessage }) 
             <button
               type="button"
               onClick={sendMessage}
+              disabled={sendStatus === "sending"}
               data-magnetic="true"
               data-cursor-hover="true"
-              className="mt-1.5 cursor-pointer rounded-full border-none bg-accent p-4 text-[15px] font-bold text-canvas"
+              className="mt-1.5 cursor-pointer rounded-full border-none bg-accent p-4 text-[15px] font-bold text-canvas disabled:cursor-not-allowed disabled:opacity-70"
             >
-              Send Message
+              {sendStatus === "sending" ? "Sending..." : "Send Message"}
             </button>
+            {statusMessage && (
+              <p className={`text-sm ${statusMessage.tone === "error" ? "text-red-400" : "text-accent"}`}>
+                {statusMessage.text}
+              </p>
+            )}
           </div>
         </div>
 
