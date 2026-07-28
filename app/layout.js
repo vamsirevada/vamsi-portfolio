@@ -17,7 +17,7 @@ const manrope = Manrope({
   display: "swap",
 });
 
-const siteUrl = "https://vamsirevada.dev";
+const siteUrl = "https://www.vamsirevada.com";
 const title = "Vamsi Revada — Full-Stack Developer & Freelancer";
 const description =
   "I build premium web and mobile applications that scale — from real-time platforms to AI-powered products. Full-stack developer available for freelance projects.";
