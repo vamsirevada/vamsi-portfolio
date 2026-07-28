@@ -60,6 +60,27 @@ In production, add `RESEND_API_KEY` (and `CONTACT_FROM_EMAIL` once you have a ve
 
 The form also includes a hidden honeypot field to filter out basic spam bots.
 
+## Invoice tool
+
+`/invoice` is a private, password-gated page (not linked anywhere public, and blocked by middleware for anyone without a valid session) for generating client invoices during freelance projects — advance payments, phase milestones, final payments, etc. It's a personal tool, not part of the public portfolio.
+
+What it does:
+- Fill in client details, project/description, line items, tax %, currency, and due date; see subtotal/tax/total computed live.
+- **Preview** the PDF before saving, or **Save** it (stored in Postgres with an auto-suggested invoice number like `INV-2026-001`).
+- From the history table: **Download** the PDF, **Email** it directly to the client (via the same Resend integration as the contact form, with reply-to set to your own business email), or change its status between draft/sent/paid.
+
+To enable it:
+
+1. **Password** — copy `.env.example` to `.env.local` and set `INVOICE_PASSWORD` to something only you know. Optionally set `INVOICE_SESSION_SECRET` to a separate random string (falls back to `INVOICE_PASSWORD` if omitted).
+2. **Database** — in Vercel: Project → Storage → Create Database → Postgres (powered by Neon). Linking it to this project auto-injects `DATABASE_URL`. Locally, add the same connection string to `.env.local`. The `invoices` table is created automatically on first use — no manual migration needed. Without `DATABASE_URL` set, `/invoice` shows a "not configured" message instead of erroring.
+3. **Your business details** — fill in `INVOICE_BUSINESS_NAME`, `INVOICE_BUSINESS_EMAIL`, `INVOICE_BUSINESS_ADDRESS`, `INVOICE_BUSINESS_PHONE`, and `INVOICE_GST_NUMBER` (all optional except name) — these appear on every generated PDF.
+4. **Payment instructions** — fill in `INVOICE_BANK_DETAILS` (multi-line free text: account name/number/IFSC/bank), `INVOICE_UPI_ID`, and/or `INVOICE_PAYPAL_EMAIL` — shown in the PDF footer.
+5. **Emailing invoices** — reuses `RESEND_API_KEY` and `CONTACT_FROM_EMAIL` from the contact form setup above. Without `RESEND_API_KEY`, the Email button reports that sending isn't configured yet, but Download still works.
+
+In production, add all of the above as environment variables in Vercel → Project → Settings → Environment Variables, then redeploy.
+
+**Security note:** none of these values (password, bank details, database URL) live in the codebase — they're environment variables only, since this repo is public. Treat `INVOICE_PASSWORD` like any other credential; anyone with it can view your client list and invoice amounts.
+
 ## Build
 
 ```bash
