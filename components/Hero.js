@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { site } from "@/lib/content";
 import { IconArrowRight } from "./Icons";
 import Shine from "./Shine";
 
@@ -130,16 +129,6 @@ export default function Hero({ blob1Ref, blob2Ref, blob3Ref, heroSubRef, heroCta
               <IconArrowRight className="h-4 w-4" />
             </span>
             <Shine />
-          </a>
-          <a
-            href={site.calendlyUrl}
-            target="_blank"
-            rel="noopener"
-            data-magnetic="true"
-            data-cursor-hover="true"
-            className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-transparent px-8 py-4 text-[15px] font-semibold text-ink"
-          >
-            Book a Call
           </a>
         </div>
       </div>

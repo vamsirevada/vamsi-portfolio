@@ -1,6 +1,5 @@
-import { navLinks, site } from "@/lib/content";
+import { navLinks } from "@/lib/content";
 import { IconMenu, IconClose } from "./Icons";
-import Shine from "./Shine";
 
 export default function Navbar({ navRef, menuOpen, toggleMenu }) {
   return (
@@ -36,17 +35,6 @@ export default function Navbar({ navRef, menuOpen, toggleMenu }) {
         </div>
 
         <div className="flex items-center gap-4">
-          <a
-            href={site.calendlyUrl}
-            target="_blank"
-            rel="noopener"
-            data-magnetic="true"
-            data-cursor-hover="true"
-            className="group relative isolate inline-flex items-center overflow-hidden rounded-full bg-accent px-[22px] py-[10px] text-[13px] font-bold tracking-[-0.01em] text-canvas"
-          >
-            <span className="relative z-10">Book a Call</span>
-            <Shine />
-          </a>
           <button
             onClick={toggleMenu}
             aria-label={menuOpen ? "Close menu" : "Open menu"}
@@ -70,16 +58,6 @@ export default function Navbar({ navRef, menuOpen, toggleMenu }) {
               {link.label}
             </a>
           ))}
-          <a
-            href={site.calendlyUrl}
-            target="_blank"
-            rel="noopener"
-            onClick={toggleMenu}
-            className="group relative isolate mt-3 overflow-hidden rounded-full bg-accent px-8 py-3.5 font-bold text-canvas"
-          >
-            <span className="relative z-10">Book a Call</span>
-            <Shine />
-          </a>
         </div>
       )}
     </>

@@ -4,7 +4,6 @@ import { IconArrowUpRight, IconDownload } from "./Icons";
 import Shine from "./Shine";
 
 const links = (site) => [
-  { label: "Book a Call", href: site.calendlyUrl, external: true, icon: "arrow" },
   { label: "Email", href: `mailto:${site.email}`, external: false, text: site.email },
   { label: "LinkedIn", href: site.linkedinUrl, external: true, icon: "arrow" },
   { label: "GitHub", href: site.githubUrl, external: true, icon: "arrow" },
@@ -31,7 +30,7 @@ export default function Contact({ nameRef, emailRef, messageRef, honeypotRef, se
           Let&apos;s build something great.
         </h2>
         <p className="mx-auto mb-12 max-w-[520px] text-canvas leading-[1.7] text-ink-2">
-          Have a project in mind? Tell me about it, or grab time on my calendar directly.
+          Have a project in mind? Tell me about it below.
         </p>
       </div>
 
