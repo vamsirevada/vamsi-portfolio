@@ -22,10 +22,12 @@ export default function Services() {
           className="grid gap-px overflow-hidden rounded-[24px] border border-white/6 bg-white/6"
           style={{ gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))" }}
         >
-          {services.map((s) => (
+          {services.map((s, i) => (
             <div
               key={s.n}
-              className="translate-y-5 bg-card px-7 py-9 opacity-0 transition-colors duration-300 ease-out hover:bg-[#161616]"
+              className={`translate-y-5 bg-card px-7 py-9 opacity-0 transition-colors duration-300 ease-out hover:bg-[#161616] ${
+                i === services.length - 1 ? "col-span-2" : ""
+              }`}
             >
               <div className="mb-[18px] font-display text-[13px] font-bold text-accent">{s.n}</div>
               <h4 className="m-0 mb-2.5 font-display text-lg font-semibold text-ink">{s.title}</h4>
