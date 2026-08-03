@@ -1,5 +1,18 @@
+import { AnimatePresence, motion } from "framer-motion";
 import { navLinks } from "@/lib/content";
 import { IconMenu, IconClose } from "./Icons";
+
+const menuVariants = {
+  hidden: { opacity: 0 },
+  visible: { opacity: 1, transition: { staggerChildren: 0.05, delayChildren: 0.05 } },
+  exit: { opacity: 0, transition: { staggerChildren: 0.03, staggerDirection: -1, when: "afterChildren" } },
+};
+
+const menuLinkVariants = {
+  hidden: { opacity: 0, y: 16 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.3, ease: "easeOut" } },
+  exit: { opacity: 0, y: 16, transition: { duration: 0.2, ease: "easeOut" } },
+};
 
 export default function Navbar({ navRef, menuOpen, toggleMenu }) {
   return (
@@ -46,20 +59,30 @@ export default function Navbar({ navRef, menuOpen, toggleMenu }) {
         </div>
       </nav>
 
-      {menuOpen && (
-        <div className="fixed inset-0 z-[899] flex flex-col items-center justify-center gap-7 bg-[rgba(5,5,5,0.97)] backdrop-blur-[20px]">
-          {navLinks.map((link) => (
-            <a
-              key={link.href}
-              href={link.href}
-              onClick={toggleMenu}
-              className="font-display text-[32px] font-semibold text-ink"
-            >
-              {link.label}
-            </a>
-          ))}
-        </div>
-      )}
+      <AnimatePresence>
+        {menuOpen && (
+          <motion.div
+            key="mobile-menu"
+            variants={menuVariants}
+            initial="hidden"
+            animate="visible"
+            exit="exit"
+            className="fixed inset-0 z-[899] flex flex-col items-center justify-center gap-7 bg-[rgba(5,5,5,0.97)] backdrop-blur-[20px]"
+          >
+            {navLinks.map((link) => (
+              <motion.a
+                key={link.href}
+                href={link.href}
+                onClick={toggleMenu}
+                variants={menuLinkVariants}
+                className="font-display text-[32px] font-semibold text-ink"
+              >
+                {link.label}
+              </motion.a>
+            ))}
+          </motion.div>
+        )}
+      </AnimatePresence>
     </>
   );
 }

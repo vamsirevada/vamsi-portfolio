@@ -1,7 +1,9 @@
+import { motion } from "framer-motion";
 import SectionEyebrow from "./SectionEyebrow";
 import { site } from "@/lib/content";
 import { IconArrowUpRight, IconDownload } from "./Icons";
 import Shine from "./Shine";
+import { fadeInUp, staggerContainer, staggerItem, tileHover, revealViewport } from "@/lib/motion";
 
 const links = (site) => [
   { label: "Email", href: `mailto:${site.email}`, external: false, text: site.email },
@@ -17,6 +19,11 @@ const STATUS_MESSAGES = {
   success: { tone: "accent", text: "Thanks — I'll get back to you soon." },
 };
 
+const delayed = (delay) => ({
+  hidden: fadeInUp.hidden,
+  visible: { ...fadeInUp.visible, transition: { ...fadeInUp.visible.transition, delay } },
+});
+
 export default function Contact({ nameRef, emailRef, messageRef, honeypotRef, sendMessage, sendStatus }) {
   const statusMessage = STATUS_MESSAGES[sendStatus];
   return (
@@ -24,7 +31,7 @@ export default function Contact({ nameRef, emailRef, messageRef, honeypotRef, se
       id="contact"
       className="relative mx-auto max-w-[1000px] px-[clamp(20px,6vw,64px)] py-[clamp(80px,10vw,160px)] text-center"
     >
-      <div data-reveal="true" className="translate-y-6 opacity-0 transition-[opacity,transform] duration-800 ease-out">
+      <motion.div variants={fadeInUp} initial="hidden" whileInView="visible" viewport={revealViewport}>
         <SectionEyebrow label="Contact" centered />
         <h2 className="m-0 mb-5 font-display text-[clamp(34px,5.5vw,64px)] font-bold leading-[1.05] tracking-[-0.03em]">
           Let&apos;s build something great.
@@ -32,12 +39,15 @@ export default function Contact({ nameRef, emailRef, messageRef, honeypotRef, se
         <p className="mx-auto mb-12 max-w-[520px] text-canvas leading-[1.7] text-ink-2">
           Have a project in mind? Tell me about it below.
         </p>
-      </div>
+      </motion.div>
 
       <div className="grid grid-cols-1 gap-8 text-left md:grid-cols-[1.1fr_0.9fr]">
-        <div
-          data-reveal="true"
-          className="translate-y-5 rounded-[24px] border border-white/8 bg-card-2 p-[clamp(24px,3vw,36px)] opacity-0 transition-[opacity,transform] duration-800 ease-out [transition-delay:0.1s]"
+        <motion.div
+          variants={delayed(0.1)}
+          initial="hidden"
+          whileInView="visible"
+          viewport={revealViewport}
+          className="rounded-[24px] border border-white/8 bg-card-2 p-[clamp(24px,3vw,36px)]"
         >
           <div className="flex flex-col gap-[18px]">
             <input
@@ -94,15 +104,20 @@ export default function Contact({ nameRef, emailRef, messageRef, honeypotRef, se
               </p>
             )}
           </div>
-        </div>
+        </motion.div>
 
-        <div
-          data-reveal="true"
-          className="flex translate-y-5 flex-col gap-3.5 opacity-0 transition-[opacity,transform] duration-800 ease-out [transition-delay:0.2s]"
+        <motion.div
+          variants={staggerContainer}
+          initial="hidden"
+          whileInView="visible"
+          viewport={revealViewport}
+          className="flex flex-col gap-3.5"
         >
           {links(site).map((l) => (
-            <a
+            <motion.a
               key={l.label}
+              variants={staggerItem}
+              {...tileHover}
               href={l.href}
               target={l.external ? "_blank" : undefined}
               rel={l.external ? "noopener" : undefined}
@@ -117,9 +132,9 @@ export default function Contact({ nameRef, emailRef, messageRef, honeypotRef, se
               ) : (
                 <IconArrowUpRight className="h-4 w-4 text-accent" />
               )}
-            </a>
+            </motion.a>
           ))}
-        </div>
+        </motion.div>
       </div>
     </section>
   );

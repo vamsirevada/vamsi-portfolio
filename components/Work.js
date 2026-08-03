@@ -1,6 +1,8 @@
+import { motion } from "framer-motion";
 import SectionEyebrow from "./SectionEyebrow";
 import ImagePlaceholder from "./ImagePlaceholder";
 import { featuredProjects, otherProjects } from "@/lib/content";
+import { fadeInUp, staggerContainer, staggerItem, revealViewport } from "@/lib/motion";
 
 export default function Work() {
   return (
@@ -8,26 +10,33 @@ export default function Work() {
       id="work"
       className="relative mx-auto max-w-[1180px] px-[clamp(20px,6vw,64px)] py-[clamp(80px,10vw,140px)]"
     >
-      <div
-        data-reveal="true"
-        className="mx-auto mb-16 max-w-[640px] translate-y-6 text-center opacity-0 transition-[opacity,transform] duration-800 ease-out"
+      <motion.div
+        variants={fadeInUp}
+        initial="hidden"
+        whileInView="visible"
+        viewport={revealViewport}
+        className="mx-auto mb-16 max-w-[640px] text-center"
       >
         <SectionEyebrow label="Selected Work" centered />
         <h2 className="m-0 font-display text-[clamp(30px,4vw,44px)] font-semibold tracking-[-0.02em]">
           Products people actually use.
         </h2>
-      </div>
+      </motion.div>
 
-      <div
-        data-reveal-stagger="true"
+      <motion.div
+        variants={staggerContainer}
+        initial="hidden"
+        whileInView="visible"
+        viewport={revealViewport}
         className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3"
         style={{ gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))" }}
       >
         {[...featuredProjects, ...otherProjects].map((proj) => (
-          <div
+          <motion.div
             key={proj.name}
+            variants={staggerItem}
             data-tilt="true"
-            className="group flex translate-y-[30px] flex-col overflow-hidden rounded-[20px] border border-white/8 bg-card-2 opacity-0"
+            className="group flex flex-col overflow-hidden rounded-[20px] border border-white/8 bg-card-2"
           >
             <div style={{ aspectRatio: "16/10" }}>
               <ImagePlaceholder label={proj.imgPlaceholder} src={proj.img} />
@@ -43,9 +52,9 @@ export default function Work() {
                 ))}
               </div>
             </div>
-          </div>
+          </motion.div>
         ))}
-      </div>
+      </motion.div>
     </section>
   );
 }

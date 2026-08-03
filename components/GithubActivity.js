@@ -2,9 +2,11 @@
 
 import { useEffect, useRef, useState } from "react";
 import anime from "animejs";
+import { motion } from "framer-motion";
 import SectionEyebrow from "./SectionEyebrow";
 import { IconArrowUpRight } from "./Icons";
 import { site } from "@/lib/content";
+import { fadeInUp, revealViewport } from "@/lib/motion";
 
 const CELL = 11;
 const GAP = 3;
@@ -96,19 +98,25 @@ export default function GithubActivity() {
 
   return (
     <section className="relative mx-auto max-w-[1180px] px-[clamp(20px,6vw,64px)] py-[clamp(70px,8vw,110px)]">
-      <div
-        data-reveal="true"
-        className="mx-auto mb-12 max-w-[640px] translate-y-6 text-center opacity-0 transition-[opacity,transform] duration-800 ease-out"
+      <motion.div
+        variants={fadeInUp}
+        initial="hidden"
+        whileInView="visible"
+        viewport={revealViewport}
+        className="mx-auto mb-12 max-w-[640px] text-center"
       >
         <SectionEyebrow label="GitHub Activity" centered />
         <h2 className="m-0 font-display text-[clamp(30px,4vw,44px)] font-semibold tracking-[-0.02em]">
           Still shipping, every week.
         </h2>
-      </div>
+      </motion.div>
 
-      <div
-        data-reveal="true"
-        className="translate-y-5 rounded-[24px] border border-white/6 bg-card p-6 opacity-0 transition-[opacity,transform] duration-700 ease-out sm:p-8"
+      <motion.div
+        variants={fadeInUp}
+        initial="hidden"
+        whileInView="visible"
+        viewport={revealViewport}
+        className="rounded-[24px] border border-white/6 bg-card p-6 sm:p-8"
       >
         <div className="mb-6 flex flex-wrap items-baseline justify-between gap-2">
           <div className="font-display text-lg font-semibold text-ink">
@@ -199,7 +207,7 @@ export default function GithubActivity() {
           ))}
           <span>More</span>
         </div>
-      </div>
+      </motion.div>
     </section>
   );
 }

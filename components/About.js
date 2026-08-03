@@ -1,6 +1,8 @@
 import Image from "next/image";
+import { motion } from "framer-motion";
 import SectionEyebrow from "./SectionEyebrow";
 import { differentiators, techStack } from "@/lib/content";
+import { fadeInUp, staggerContainer, staggerItem, revealViewport } from "@/lib/motion";
 
 export default function About() {
   return (
@@ -9,9 +11,11 @@ export default function About() {
       className="relative mx-auto max-w-295 px-[clamp(20px,6vw,64px)] py-[clamp(80px,10vw,140px)]"
     >
       <div className="grid grid-cols-1 items-start gap-[clamp(40px,6vw,80px)] md:grid-cols-[1.1fr_0.9fr]">
-        <div
-          data-reveal="true"
-          className="translate-y-7.5 opacity-0 transition-[opacity,transform] duration-900 ease-[cubic-bezier(0.22,1,0.36,1)]"
+        <motion.div
+          variants={fadeInUp}
+          initial="hidden"
+          whileInView="visible"
+          viewport={revealViewport}
         >
           <SectionEyebrow label="About" />
           <h2 className="m-0 mb-6 font-display text-[clamp(30px,4vw,44px)] font-semibold leading-[1.15] tracking-[-0.02em]">
@@ -41,22 +45,35 @@ export default function About() {
             ))}
           </div>
 
-          <div data-reveal-stagger="true" className="flex flex-wrap gap-2.5">
+          <motion.div
+            variants={staggerContainer}
+            initial="hidden"
+            whileInView="visible"
+            viewport={revealViewport}
+            className="flex flex-wrap gap-2.5"
+          >
             {techStack.map((t) => (
-              <span
+              <motion.span
                 key={t}
+                variants={staggerItem}
                 data-cursor-hover="true"
-                className="opacity-0 rounded-full border border-white/8 bg-card px-4 py-2.25 text-[13px] text-[#d4d4d4] transition-[transform,border-color,color] duration-250 ease-out hover:-translate-y-0.75 hover:border-accent/50 hover:text-accent"
+                className="rounded-full border border-white/8 bg-card px-4 py-2.25 text-[13px] text-[#d4d4d4] transition-[transform,border-color,color] duration-250 ease-out hover:-translate-y-0.75 hover:border-accent/50 hover:text-accent"
               >
                 {t}
-              </span>
+              </motion.span>
             ))}
-          </div>
-        </div>
+          </motion.div>
+        </motion.div>
 
-        <div
-          data-reveal="true"
-          className="flex translate-y-7.5 flex-col gap-5 opacity-0 transition-[opacity,transform] duration-900 ease-[cubic-bezier(0.22,1,0.36,1)] delay-150"
+        <motion.div
+          variants={{
+            hidden: fadeInUp.hidden,
+            visible: { ...fadeInUp.visible, transition: { ...fadeInUp.visible.transition, delay: 0.15 } },
+          }}
+          initial="hidden"
+          whileInView="visible"
+          viewport={revealViewport}
+          className="flex flex-col gap-5"
         >
           <div
             data-tilt="true"
@@ -82,7 +99,7 @@ export default function About() {
               <div className="mt-1 text-[13px] text-ink-3">Projects shipped</div>
             </div>
           </div>
-        </div>
+        </motion.div>
       </div>
     </section>
   );

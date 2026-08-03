@@ -1,3 +1,4 @@
+import { motion } from "framer-motion";
 import { IconHome, IconGrid, IconSparkle, IconMail } from "./Icons";
 
 const items = [
@@ -11,9 +12,16 @@ export default function MobileDock() {
   return (
     <div className="fixed bottom-[18px] left-1/2 z-[900] hidden -translate-x-1/2 items-center gap-[22px] rounded-full border border-white/8 bg-[rgba(17,17,17,0.85)] px-[18px] py-[10px] shadow-[0_20px_60px_rgba(0,0,0,0.5)] backdrop-blur-[16px] max-[859px]:flex">
       {items.map(({ href, label, Icon }, i) => (
-        <a key={href} href={href} aria-label={label} className={i === 0 ? "text-ink" : "text-ink-2"}>
+        <motion.a
+          key={href}
+          href={href}
+          aria-label={label}
+          whileTap={{ scale: 0.8 }}
+          transition={{ type: "spring", stiffness: 400, damping: 15 }}
+          className={i === 0 ? "text-ink" : "text-ink-2"}
+        >
           <Icon className="h-5 w-5" />
-        </a>
+        </motion.a>
       ))}
     </div>
   );

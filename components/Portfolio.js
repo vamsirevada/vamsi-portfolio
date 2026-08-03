@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import anime from "animejs";
+import { MotionConfig } from "framer-motion";
 
 import NoiseOverlay from "./NoiseOverlay";
 import Loader from "./Loader";
@@ -314,51 +315,6 @@ export default function Portfolio() {
       if (cursorRingRef.current) cursorRingRef.current.style.display = "none";
     }
 
-    const io = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            entry.target.style.opacity = 1;
-            entry.target.style.transform = entry.target.style.transform.includes("translateX")
-              ? "translateX(0)"
-              : "translateY(0)";
-            io.unobserve(entry.target);
-          }
-        });
-      },
-      { threshold: 0.15 }
-    );
-    document.querySelectorAll("[data-reveal]").forEach((el) => io.observe(el));
-
-    const groupIo = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            const el = entry.target;
-            const children = Array.from(el.children);
-            if (reducedRef.current) {
-              children.forEach((c) => {
-                c.style.opacity = 1;
-                c.style.transform = "none";
-              });
-            } else {
-              anime({
-                targets: children,
-                opacity: [0, 1],
-                translateY: [22, 0],
-                delay: anime.stagger(70),
-                duration: 650,
-                easing: "easeOutExpo",
-              });
-            }
-            groupIo.unobserve(el);
-          }
-        });
-      },
-      { threshold: 0.15 }
-    );
-    document.querySelectorAll("[data-reveal-stagger]").forEach((el) => groupIo.observe(el));
-
     const setActiveNav = (id) => {
       document.querySelectorAll("[data-nav-link]").forEach((a) => {
         const isActive = a.getAttribute("data-nav-link") === id;
@@ -431,8 +387,6 @@ export default function Portfolio() {
       magneticCleanups.forEach((fn) => fn());
       tiltCleanups.forEach((fn) => fn());
       hoverCleanups.forEach((fn) => fn());
-      io.disconnect();
-      groupIo.disconnect();
       navIo.disconnect();
       ioStats.disconnect();
     };
@@ -444,31 +398,33 @@ export default function Portfolio() {
   }, [menuOpen]);
 
   return (
-    <div className="relative overflow-hidden bg-canvas">
-      <NoiseOverlay />
-      <Loader loaded={loaded} />
-      <CustomCursor dotRef={cursorDotRef} ringRef={cursorRingRef} />
-      <ScrollProgress progressRef={progressRef} />
-      <Navbar navRef={navRef} menuOpen={menuOpen} toggleMenu={toggleMenu} />
-      <MobileDock />
+    <MotionConfig reducedMotion="user">
+      <div className="relative overflow-hidden bg-canvas">
+        <NoiseOverlay />
+        <Loader loaded={loaded} />
+        <CustomCursor dotRef={cursorDotRef} ringRef={cursorRingRef} />
+        <ScrollProgress progressRef={progressRef} />
+        <Navbar navRef={navRef} menuOpen={menuOpen} toggleMenu={toggleMenu} />
+        <MobileDock />
 
-      <Hero blob1Ref={blob1Ref} blob2Ref={blob2Ref} blob3Ref={blob3Ref} heroSubRef={heroSubRef} heroCtaRef={heroCtaRef} />
-      <About />
-      <Work />
-      <Services />
-      <ExperienceProcess />
-      <Skills />
-      <GithubActivity />
-      <Stats statsRef={statsRef} />
-      <Contact
-        nameRef={nameRef}
-        emailRef={emailRef}
-        messageRef={messageRef}
-        honeypotRef={honeypotRef}
-        sendMessage={sendMessage}
-        sendStatus={sendStatus}
-      />
-      <Footer />
-    </div>
+        <Hero blob1Ref={blob1Ref} blob2Ref={blob2Ref} blob3Ref={blob3Ref} heroSubRef={heroSubRef} heroCtaRef={heroCtaRef} />
+        <About />
+        <Work />
+        <Services />
+        <ExperienceProcess />
+        <Skills />
+        <GithubActivity />
+        <Stats statsRef={statsRef} />
+        <Contact
+          nameRef={nameRef}
+          emailRef={emailRef}
+          messageRef={messageRef}
+          honeypotRef={honeypotRef}
+          sendMessage={sendMessage}
+          sendStatus={sendStatus}
+        />
+        <Footer />
+      </div>
+    </MotionConfig>
   );
 }
