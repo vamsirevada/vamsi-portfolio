@@ -1,8 +1,12 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import dynamic from "next/dynamic";
+import { motion } from "framer-motion";
 import { IconArrowRight } from "./Icons";
 import Shine from "./Shine";
+
+const HeroNetwork = dynamic(() => import("./HeroNetwork"), { ssr: false });
 
 const mk = (s, accentLast) =>
   s.split("").map((c, i) => ({
@@ -16,6 +20,7 @@ const heroLine2 = mk("Vamsi Revada.", true);
 
 export default function Hero({ blob1Ref, blob2Ref, blob3Ref, heroSubRef, heroCtaRef }) {
   const [particles, setParticles] = useState([]);
+  const [show3D, setShow3D] = useState(false);
 
   useEffect(() => {
     setParticles(
@@ -27,6 +32,18 @@ export default function Hero({ blob1Ref, blob2Ref, blob3Ref, heroSubRef, heroCta
         delay: Math.random() * 8,
       }))
     );
+  }, []);
+
+  useEffect(() => {
+    const reduced =
+      typeof window !== "undefined" &&
+      window.matchMedia &&
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (reduced) return;
+    // Deferred until well after the hero text reveal (~2.4s) finishes, so
+    // downloading/mounting the 3D scene can never delay LCP.
+    const timer = setTimeout(() => setShow3D(true), 2200);
+    return () => clearTimeout(timer);
   }, []);
 
   return (
@@ -64,6 +81,17 @@ export default function Hero({ blob1Ref, blob2Ref, blob3Ref, heroSubRef, heroCta
           }}
         />
       ))}
+
+      {show3D && (
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 1.4, ease: "easeOut" }}
+          className="pointer-events-none absolute inset-0 z-1"
+        >
+          <HeroNetwork />
+        </motion.div>
+      )}
 
       <div className="relative z-3 flex max-w-[900px] flex-col items-center gap-7">
         <div
