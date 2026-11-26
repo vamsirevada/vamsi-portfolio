@@ -18,6 +18,10 @@ export async function POST(request) {
     return NextResponse.json({ ok: false, reason: "invalid_body" }, { status: 400 });
   }
 
+  if (!body || typeof body !== "object" || Array.isArray(body)) {
+    return NextResponse.json({ ok: false, reason: "invalid_body" }, { status: 400 });
+  }
+
   // Honeypot: real visitors never fill this hidden field, bots often do.
   // Pretend success so bots don't learn to look for a different signal.
   if (typeof body.company === "string" && body.company.trim() !== "") {

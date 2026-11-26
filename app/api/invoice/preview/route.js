@@ -10,6 +10,8 @@ export async function POST(request) {
     return new Response("Invalid body", { status: 400 });
   }
 
+  if (!body || typeof body !== "object" || Array.isArray(body)) return new Response("Invalid body", { status: 400 });
+
   const { lineItems, subtotal, taxAmount, total } = computeTotals(body.lineItems, body.taxPercent);
 
   const invoice = {

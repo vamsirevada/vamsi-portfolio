@@ -2,6 +2,14 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import BrandMark from "@/components/BrandMark";
+
+const SIGN_IN_ERRORS = {
+  not_configured: "Set INVOICE_PASSWORD to enable sign-in.",
+  invalid_password: "Incorrect password.",
+  rate_limited: "Too many sign-in attempts. Try again in a few minutes.",
+  login_unavailable: "Sign-in is unavailable. Check the invoice database connection.",
+};
 
 export default function InvoiceLoginPage() {
   const router = useRouter();
@@ -21,11 +29,7 @@ export default function InvoiceLoginPage() {
       });
       const data = await res.json();
       if (!res.ok || !data.ok) {
-        setError(
-          data.reason === "not_configured"
-            ? "The invoice tool isn't configured yet — set INVOICE_PASSWORD."
-            : "Incorrect password."
-        );
+        setError(SIGN_IN_ERRORS[data.reason] || "Sign-in failed. Try again.");
         setLoading(false);
         return;
       }
@@ -39,24 +43,26 @@ export default function InvoiceLoginPage() {
 
   return (
     <main className="flex min-h-screen items-center justify-center bg-canvas px-6">
-      <form onSubmit={handleSubmit} className="w-full max-w-sm rounded-2xl border border-white/8 bg-card-2 p-8">
-        <h1 className="mb-6 font-display text-xl font-semibold text-ink">Invoice Tool</h1>
-        <label className="mb-2 block text-[13px] text-ink-3">Password</label>
+      <form onSubmit={handleSubmit} className="w-full max-w-sm rounded-2xl border border-white/12 bg-card-2 p-6 sm:p-8">
+        <BrandMark className="mb-4 h-10 w-10 rounded-lg ring-1 ring-accent/20" />
+        <h1 className="mb-6 font-display text-2xl font-semibold text-ink">Invoice sign-in</h1>
+        <label htmlFor="invoice-password" className="mb-2 block text-sm text-ink-2">Password</label>
         <input
+          id="invoice-password"
           type="password"
-          autoFocus
+          autoComplete="current-password"
+          required
           value={password}
           onChange={(e) => setPassword(e.target.value)}
-          className="mb-4 w-full rounded-xl border border-white/10 bg-card-3 px-4 py-3.5 text-[15px] font-[inherit] text-ink placeholder:text-ink-4 focus:border-accent/50 focus:outline-none"
-          placeholder="Enter password"
+          className="mb-4 w-full rounded-lg border border-white/15 bg-card-3 px-4 py-3 text-base text-ink"
         />
-        {error && <p className="mb-4 text-sm text-red-400">{error}</p>}
+        {error && <p role="alert" className="mb-4 text-sm text-red-300">{error}</p>}
         <button
           type="submit"
           disabled={loading}
-          className="w-full cursor-pointer rounded-full border-none bg-accent p-4 text-[15px] font-bold text-canvas disabled:cursor-not-allowed disabled:opacity-70"
+          className="w-full cursor-pointer rounded-lg bg-accent p-3 text-sm font-bold text-canvas disabled:cursor-not-allowed disabled:opacity-70"
         >
-          {loading ? "Checking..." : "Unlock"}
+          {loading ? "Signing in…" : "Sign in"}
         </button>
       </form>
     </main>

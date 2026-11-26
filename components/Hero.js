@@ -1,46 +1,9 @@
-"use client";
-
-import { useEffect, useState } from "react";
-import dynamic from "next/dynamic";
 import Image from "next/image";
 import { site } from "@/lib/content";
-import Shine from "./Shine";
-
-const HeroNetwork = dynamic(() => import("./HeroNetwork"), { ssr: false });
-
 export default function Hero() {
-  const [showNetwork, setShowNetwork] = useState(false);
-
-  useEffect(() => {
-    const query = window.matchMedia("(min-width: 900px) and (prefers-reduced-motion: no-preference)");
-    let timer;
-
-    function updateNetwork() {
-      clearTimeout(timer);
-      if (query.matches) {
-        timer = setTimeout(() => setShowNetwork(true), 2200);
-      } else {
-        setShowNetwork(false);
-      }
-    }
-
-    updateNetwork();
-    query.addEventListener("change", updateNetwork);
-    return () => {
-      clearTimeout(timer);
-      query.removeEventListener("change", updateNetwork);
-    };
-  }, []);
-
   return (
     <section id="top" aria-labelledby="hero-title" className="portfolio-hero relative isolate">
-      {showNetwork && (
-        <div aria-hidden="true" className="pointer-events-none absolute inset-y-0 right-0 -z-10 w-3/4 opacity-50">
-          <HeroNetwork />
-        </div>
-      )}
-
-      <div className="portfolio-shell grid items-center gap-12 pt-28 pb-14 md:pt-32 md:pb-20 min-[900px]:grid-cols-[minmax(0,1.35fr)_minmax(0,0.85fr)] min-[900px]:gap-16">
+      <div className="portfolio-shell grid items-center gap-8 pt-24 pb-12 sm:pt-28 min-[900px]:grid-cols-[minmax(0,1.35fr)_minmax(0,0.85fr)] min-[900px]:gap-16 min-[900px]:pt-32 min-[900px]:pb-20">
         <div>
           <div className="mb-7 flex items-center gap-2.5 text-sm font-semibold text-accent sm:mb-9">
             <span aria-hidden="true" className="h-2 w-2 shrink-0 rounded-full bg-accent shadow-[0_0_18px_#6ee7b766]" />
@@ -58,10 +21,9 @@ export default function Hero() {
           <div className="mt-8 flex flex-wrap gap-3">
             <a
               href="#work"
-              className="group relative isolate inline-flex min-h-12 items-center overflow-hidden rounded-lg bg-accent px-5 py-3 text-sm font-bold text-canvas"
+              className="inline-flex min-h-12 items-center rounded-lg bg-accent px-5 py-3 text-sm font-bold text-canvas hover:bg-[#96f0cd]"
             >
-              <span className="relative z-10">View selected work</span>
-              <Shine />
+              View selected work
             </a>
             <a
               href="#contact"
@@ -72,14 +34,14 @@ export default function Hero() {
           </div>
         </div>
 
-        <div className="hero-portrait relative mx-auto w-full max-w-[400px] min-[900px]:mr-2">
-          <div className="relative aspect-[4/4.55] overflow-hidden rounded-[inherit] bg-card-2">
+        <div className="hero-portrait relative w-full max-w-56 min-[900px]:mx-auto min-[900px]:mr-2 min-[900px]:max-w-[400px]">
+          <div className="relative aspect-[4/3] min-[900px]:aspect-[4/4.55] overflow-hidden rounded-[inherit] bg-card-2">
             <Image
               src="/portrait.png"
               alt={site.name}
               fill
               priority
-              sizes="(min-width: 900px) 400px, (min-width: 465px) 400px, 90vw"
+              sizes="(min-width: 900px) 400px, 224px"
               className="object-cover object-[center_38%]"
             />
           </div>

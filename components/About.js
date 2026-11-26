@@ -1,5 +1,5 @@
 import SectionEyebrow from "./SectionEyebrow";
-import { differentiators, techStack } from "@/lib/content";
+import { differentiators, featuredProjects, otherProjects, techStack } from "@/lib/content";
 
 export default function About() {
   return (
@@ -13,7 +13,7 @@ export default function About() {
           <p className="mt-5 max-w-xl text-base leading-[1.8] text-ink-2">
             I&apos;m a full-stack developer and freelancer who partners directly with founders to design, build and ship products end to end. I&apos;ve worked on real-time platforms, mobile apps and AI-powered products.
           </p>
-          <ul aria-label="Technology stack" className="mt-7 flex flex-wrap gap-2">
+          <ul id="skills" aria-label="Technology stack" className="mt-7 flex flex-wrap gap-2">
             {techStack.map((tech) => (
               <li key={tech} className="rounded-md border border-white/12 bg-white/4 px-3 py-1.5 text-[0.8125rem] text-ink-2">
                 {tech}
@@ -23,14 +23,14 @@ export default function About() {
         </div>
 
         <div>
-          <dl className="grid grid-cols-2 gap-5 border-b border-white/12 pb-6">
+          <dl id="stats" className="grid grid-cols-2 gap-5 border-b border-white/12 pb-6">
             <div>
               <dt className="text-sm text-ink-2">Years of experience</dt>
               <dd className="mt-2 font-display text-4xl font-bold text-accent">5+</dd>
             </div>
             <div>
-              <dt className="text-sm text-ink-2">Projects shipped</dt>
-              <dd className="mt-2 font-display text-4xl font-bold text-accent">7+</dd>
+              <dt className="text-sm text-ink-2">Projects showcased</dt>
+              <dd className="mt-2 font-display text-4xl font-bold text-accent">{featuredProjects.length + otherProjects.length}</dd>
             </div>
           </dl>
           <ul className="divide-y divide-white/12">

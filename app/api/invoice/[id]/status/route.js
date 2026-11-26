@@ -16,7 +16,7 @@ export async function PATCH(request, { params }) {
     return NextResponse.json({ ok: false, reason: "invalid_body" }, { status: 400 });
   }
 
-  if (!VALID_STATUSES.has(body.status)) {
+  if (!VALID_STATUSES.has(body?.status)) {
     return NextResponse.json({ ok: false, reason: "invalid_status" }, { status: 400 });
   }
 

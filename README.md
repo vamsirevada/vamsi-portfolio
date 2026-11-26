@@ -6,7 +6,6 @@ A premium, dark-first freelance developer portfolio built with Next.js 15, React
 
 - **Next.js 15** (App Router) + **React 19**
 - **Tailwind CSS v4**
-- **Anime.js** for the hero letter-stagger reveal
 - Plain JavaScript (no TypeScript)
 
 ## Getting started
@@ -20,21 +19,14 @@ Open [http://localhost:3000](http://localhost:3000).
 
 ## Structure
 
-- `app/` — root layout, global styles, the single page route
-- `components/` — page sections (Hero, About, Work, Services, Experience/Process, Skills, Stats, Contact, Footer) and shared chrome (nav, custom cursor, scroll progress, loader)
-- `lib/content.js` — all site copy/data in one place (projects, services, skills, stats, etc.)
-
-## Content to fill in
-
-Several values are still placeholders:
-
-- `lib/content.js` — email, LinkedIn/GitHub URLs, Calendly link
-- Project screenshots — currently styled placeholders (`components/ImagePlaceholder.js`); swap in real images via `next/image` when available
-- `public/portrait.jpg` — a real headshot, but low-res; swap for a proper photo when you have one (keep it roughly square, it's cropped to 4:5)
+- `app/` contains the public portfolio, private invoice pages, and API routes.
+- `components/` contains portfolio sections and navigation.
+- `lib/content.js` contains portfolio copy, projects, and links.
+- `public/` contains the portrait, project screenshots, and résumé.
 
 ## GitHub activity graph
 
-The "Still shipping, every week" section (`components/GithubActivity.js`) fetches your real GitHub contribution calendar from GitHub's GraphQL API via a server route (`app/api/github-contributions/route.js`), cached/revalidated hourly.
+The collapsible GitHub activity summary (`components/GithubActivity.js`) fetches your real GitHub contribution calendar from GitHub's GraphQL API via a server route (`app/api/github-contributions/route.js`), cached/revalidated hourly.
 
 To enable it:
 
@@ -42,7 +34,7 @@ To enable it:
 2. Copy `.env.example` to `.env.local` and paste the token into `GITHUB_TOKEN`.
 3. Restart the dev server.
 
-In production, add the same `GITHUB_TOKEN` environment variable in your host's project settings (e.g. Vercel → Project → Settings → Environment Variables). Without a token configured, that section shows a quiet fallback message instead of erroring.
+In production, add the same `GITHUB_TOKEN` environment variable in your host's project settings (e.g. Vercel → Project → Settings → Environment Variables). Without a token configured, the activity summary is hidden and the GitHub link stays in the footer.
 
 ## Contact form
 
@@ -54,7 +46,7 @@ To enable it:
 2. Copy `.env.example` to `.env.local` and paste the key into `RESEND_API_KEY`.
 3. Restart the dev server.
 
-Without a verified domain, mail sends from Resend's shared `onboarding@resend.dev` address — delivery works, but it isn't branded. Once you verify your own domain in the Resend dashboard, set `CONTACT_FROM_EMAIL` (e.g. `Vamsi Revada <hello@vamsirevada.com>`) so mail sends from your own address instead.
+The default sender is Resend's test address `onboarding@resend.dev`. Once you verify your own domain in the Resend dashboard, set `CONTACT_FROM_EMAIL` (e.g. `Vamsi Revada <hello@vamsirevada.com>`) so mail sends from your own address instead.
 
 In production, add `RESEND_API_KEY` (and `CONTACT_FROM_EMAIL` once you have a verified domain) as environment variables in your host's project settings. Without `RESEND_API_KEY` configured, the form shows a friendly fallback message pointing to a direct `mailto:` link instead of erroring.
 
@@ -66,16 +58,16 @@ The form also includes a hidden honeypot field to filter out basic spam bots.
 
 What it does:
 - Fill in client details, project/description, line items, tax %, currency, and due date; see subtotal/tax/total computed live.
-- **Preview** the PDF before saving, or **Save** it (stored in Postgres with an auto-suggested invoice number like `INV-2026-001`).
-- From the history table: **Download** the PDF, **Email** it directly to the client (via the same Resend integration as the contact form, with reply-to set to your own business email), or change its status between draft/sent/paid.
+- **Preview** the PDF before saving, or **Save** it as a draft. Leave the number blank to assign the next `INV-YYYY-NNN` for the issue year in Postgres when you save.
+- From invoice history, **download** the PDF, **email** it to the client, or change its status. Use **Load older invoices** to see earlier records.
 
 To enable it:
 
-1. **Password** — copy `.env.example` to `.env.local` and set `INVOICE_PASSWORD` to something only you know. Optionally set `INVOICE_SESSION_SECRET` to a separate random string (falls back to `INVOICE_PASSWORD` if omitted).
-2. **Database** — in Vercel: Project → Storage → Create Database → Postgres (powered by Neon). Linking it to this project auto-injects `DATABASE_URL`. Locally, add the same connection string to `.env.local`. The `invoices` table is created automatically on first use — no manual migration needed. Without `DATABASE_URL` set, `/invoice` shows a "not configured" message instead of erroring.
+1. **Password** — copy `.env.example` to `.env.local` and set `INVOICE_PASSWORD` to something only you know. Optionally set `INVOICE_SESSION_SECRET` to a separate random string. Sessions expire after seven days. Changing the password or the signing secret signs out existing sessions.
+2. **Database** — attach a Neon database in the Vercel project to populate `DATABASE_URL`. For local review, add a separate development database connection string to `.env.local`. The app initializes its invoice, delivery, and login tables on first use. Hosted sign-in uses the database to limit attempts.
 3. **Your business details** — invoices use the portfolio name by default. Set `INVOICE_BUSINESS_NAME`, `INVOICE_BUSINESS_EMAIL`, `INVOICE_BUSINESS_ADDRESS`, `INVOICE_BUSINESS_PHONE`, or `INVOICE_GST_NUMBER` to customize the PDF header.
 4. **Payment instructions** — fill in `INVOICE_BANK_DETAILS` (multi-line free text: account name/number/IFSC/bank), `INVOICE_UPI_ID`, and/or `INVOICE_PAYPAL_EMAIL` — shown in the PDF footer.
-5. **Emailing invoices** — reuses `RESEND_API_KEY` and `CONTACT_FROM_EMAIL` from the contact form setup above. Without `RESEND_API_KEY`, the Email button reports that sending isn't configured yet, but Download still works.
+5. **Emailing invoices** — configure `RESEND_API_KEY` and set `INVOICE_FROM_EMAIL` to an address on a verified Resend domain. `CONTACT_FROM_EMAIL` works as a fallback when explicitly configured. The same invoice can be retried after a temporary error without sending a duplicate. If the previous attempt remains uncertain for more than 23 hours, verify it in Resend before sending a copy manually.
 
 In production, add all of the above as environment variables in Vercel → Project → Settings → Environment Variables, then redeploy.
 

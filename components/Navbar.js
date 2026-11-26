@@ -1,90 +1,49 @@
-import { AnimatePresence, motion } from "framer-motion";
+"use client";
+
+import { useRef } from "react";
 import { navLinks, site } from "@/lib/content";
 import BrandMark from "./BrandMark";
-import { IconMenu, IconClose } from "./Icons";
 
-const menuVariants = {
-  hidden: { opacity: 0 },
-  visible: { opacity: 1, transition: { staggerChildren: 0.05, delayChildren: 0.05 } },
-  exit: { opacity: 0, transition: { staggerChildren: 0.03, staggerDirection: -1, when: "afterChildren" } },
-};
+export default function Navbar() {
+  const menu = useRef(null);
 
-const menuLinkVariants = {
-  hidden: { opacity: 0, y: 16 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.3, ease: "easeOut" } },
-  exit: { opacity: 0, y: 16, transition: { duration: 0.2, ease: "easeOut" } },
-};
+  function closeMenu() {
+    menu.current.open = false;
+  }
 
-export default function Navbar({ navRef, menuOpen, toggleMenu }) {
+  function closeOnEscape(event) {
+    if (event.key === "Escape" && menu.current.open) {
+      closeMenu();
+      menu.current.querySelector("summary").focus();
+    }
+  }
+
   return (
-    <>
-      <nav
-        ref={navRef}
-        className="fixed inset-x-0 top-0 z-[900] flex items-center justify-between border-b border-white/6 bg-[rgba(5,5,5,0.4)] px-[clamp(20px,5vw,64px)] py-3 backdrop-blur-[16px] transition-[background] duration-300 ease-out"
-      >
-        <a
-          href="#top"
-          data-cursor-hover="true"
-          className="inline-flex min-h-10 items-center gap-2.5 font-display text-[17px] font-semibold tracking-[-0.025em] text-ink transition-colors hover:text-accent"
-        >
+    <header className="fixed inset-x-0 top-0 z-50 border-b border-white/12 bg-canvas/90 backdrop-blur-md">
+      <nav aria-label="Main" className="portfolio-shell flex min-h-16 items-center justify-between gap-4">
+        <a href="#top" onClick={closeMenu} className="inline-flex min-h-10 items-center gap-2.5 font-display text-[17px] font-semibold tracking-tight text-ink hover:text-accent">
           <BrandMark className="h-9 w-9 shrink-0 rounded-lg ring-1 ring-accent/20" />
           {site.name}
         </a>
-
-        <div className="hidden items-center gap-9 min-[860px]:flex">
-          {navLinks.map((link) => (
-            <a
-              key={link.href}
-              href={link.href}
-              data-cursor-hover="true"
-              data-nav-link={link.href.slice(1)}
-              className="relative inline-block text-sm font-medium text-ink-2 transition-colors hover:text-ink"
-            >
-              {link.label}
-              <span
-                data-nav-underline="true"
-                className="absolute -bottom-1 left-0 h-px w-full origin-left scale-x-0 bg-accent"
-              />
-            </a>
+        <ul className="hidden items-center gap-7 min-[720px]:flex">
+          {navLinks.map(({ href, label }) => (
+            <li key={href}><a href={href} className="text-sm font-semibold text-ink-2 hover:text-accent">{label}</a></li>
           ))}
-        </div>
-
-        <div className="flex items-center gap-4 min-[860px]:hidden">
-          <button
-            onClick={toggleMenu}
-            aria-label={menuOpen ? "Close menu" : "Open menu"}
-            data-cursor-hover="true"
-            className="flex h-10 w-10 items-center justify-center rounded-[10px] border border-white/10 bg-white/3 text-ink min-[860px]:hidden"
-          >
-            {menuOpen ? <IconClose className="h-5 w-5" /> : <IconMenu className="h-5 w-5" />}
-          </button>
-        </div>
-      </nav>
-
-      <AnimatePresence>
-        {menuOpen && (
-          <motion.div
-            key="mobile-menu"
-            variants={menuVariants}
-            initial="hidden"
-            animate="visible"
-            exit="exit"
-            className="fixed inset-0 z-[899] flex flex-col items-center justify-center gap-7 bg-[rgba(5,5,5,0.97)] backdrop-blur-[20px]"
-          >
-            {navLinks.map((link) => (
-              <motion.a
-                key={link.href}
-                href={link.href}
-                onClick={toggleMenu}
-                variants={menuLinkVariants}
-                className="font-display text-[32px] font-semibold text-ink"
-              >
-                {link.label}
-              </motion.a>
+        </ul>
+        <details ref={menu} onKeyDown={closeOnEscape} className="relative min-[720px]:hidden">
+          <summary className="flex min-h-11 cursor-pointer list-none items-center gap-2 rounded-lg border border-white/15 px-3 text-sm font-semibold text-ink [&::-webkit-details-marker]:hidden">
+            <svg aria-hidden="true" viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><path d="M4 7h16M4 12h16M4 17h16" /></svg>
+            Menu
+          </summary>
+          <ul className="absolute right-0 top-full mt-2 w-48 rounded-xl border border-white/15 bg-card p-1.5 shadow-xl">
+            {navLinks.map(({ href, label }) => (
+              <li key={href}>
+                <a href={href} onClick={closeMenu} className="block rounded-lg px-3 py-3 text-sm font-semibold text-ink hover:bg-white/8 hover:text-accent">{label}</a>
+              </li>
             ))}
-          </motion.div>
-        )}
-      </AnimatePresence>
-    </>
+          </ul>
+        </details>
+      </nav>
+    </header>
   );
 }

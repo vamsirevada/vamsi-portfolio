@@ -14,11 +14,14 @@ export async function GET(request, { params }) {
   }
 
   const buffer = await renderToBuffer(<InvoiceDocument invoice={invoice} profile={getInvoiceProfile()} />);
+  const filename = `${invoice.invoice_number}.pdf`;
+  const fallback = filename.replace(/[^\x20-\x7e]|["\\]/g, "_");
+  const encoded = encodeURIComponent(filename).replace(/['()*]/g, (character) => `%${character.charCodeAt(0).toString(16)}`);
 
   return new Response(buffer, {
     headers: {
       "Content-Type": "application/pdf",
-      "Content-Disposition": `attachment; filename="${invoice.invoice_number}.pdf"`,
+      "Content-Disposition": `attachment; filename="${fallback}"; filename*=UTF-8''${encoded}`,
     },
   });
 }

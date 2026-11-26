@@ -9,9 +9,7 @@
   --color-ink: #ffffff;
   --color-ink-2: #b4b4b4;
   --color-ink-3: #8a8a8a;
-  --color-ink-4: #666666;
   --color-accent: #6ee7b7;
-  --color-accent-blue: #4f8cff;
 
   --font-display: var(--font-space-grotesk), sans-serif;
   --font-body: var(--font-manrope), sans-serif;
@@ -28,7 +26,6 @@
     background: var(--color-canvas);
     color: var(--color-ink);
     font-family: var(--font-body);
-    cursor: default;
   }
 
   ::selection {
@@ -56,12 +53,11 @@
   margin-inline: auto;
 }
 
-.portfolio-content section[id] {
+.portfolio-content [id] {
   scroll-margin-top: 5.25rem;
 }
 
-.portfolio-content a:focus-visible,
-.portfolio-content button:focus-visible {
+:is(a, button, summary, select, input, textarea):focus-visible {
   outline: 2px solid var(--color-accent);
   outline-offset: 4px;
 }
