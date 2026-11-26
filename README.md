@@ -73,7 +73,7 @@ To enable it:
 
 1. **Password** — copy `.env.example` to `.env.local` and set `INVOICE_PASSWORD` to something only you know. Optionally set `INVOICE_SESSION_SECRET` to a separate random string (falls back to `INVOICE_PASSWORD` if omitted).
 2. **Database** — in Vercel: Project → Storage → Create Database → Postgres (powered by Neon). Linking it to this project auto-injects `DATABASE_URL`. Locally, add the same connection string to `.env.local`. The `invoices` table is created automatically on first use — no manual migration needed. Without `DATABASE_URL` set, `/invoice` shows a "not configured" message instead of erroring.
-3. **Your business details** — fill in `INVOICE_BUSINESS_NAME`, `INVOICE_BUSINESS_EMAIL`, `INVOICE_BUSINESS_ADDRESS`, `INVOICE_BUSINESS_PHONE`, and `INVOICE_GST_NUMBER` (all optional except name) — these appear on every generated PDF.
+3. **Your business details** — invoices use the portfolio name by default. Set `INVOICE_BUSINESS_NAME`, `INVOICE_BUSINESS_EMAIL`, `INVOICE_BUSINESS_ADDRESS`, `INVOICE_BUSINESS_PHONE`, or `INVOICE_GST_NUMBER` to customize the PDF header.
 4. **Payment instructions** — fill in `INVOICE_BANK_DETAILS` (multi-line free text: account name/number/IFSC/bank), `INVOICE_UPI_ID`, and/or `INVOICE_PAYPAL_EMAIL` — shown in the PDF footer.
 5. **Emailing invoices** — reuses `RESEND_API_KEY` and `CONTACT_FROM_EMAIL` from the contact form setup above. Without `RESEND_API_KEY`, the Email button reports that sending isn't configured yet, but Download still works.
 

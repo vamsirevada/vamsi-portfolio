@@ -1,12 +1,11 @@
 import { site } from "@/lib/content";
+import BrandMark from "./BrandMark";
 
 export default function Footer() {
   return (
     <footer className="relative mx-auto flex max-w-[1180px] flex-wrap items-center justify-between gap-5 border-t border-white/6 px-[clamp(20px,6vw,64px)] pt-12 pb-[100px]">
       <div className="flex items-center gap-2.5">
-        <span className="font-display text-base font-bold text-ink">
-          VR<span className="text-accent">.</span>
-        </span>
+        <BrandMark className="h-7 w-7 shrink-0 rounded-md ring-1 ring-accent/20" />
         <span className="text-[13px] text-ink-4">© {site.year} Vamsi Revada. Built with care.</span>
       </div>
       <div className="flex gap-6">

@@ -1,5 +1,6 @@
 import { AnimatePresence, motion } from "framer-motion";
-import { navLinks } from "@/lib/content";
+import { navLinks, site } from "@/lib/content";
+import BrandMark from "./BrandMark";
 import { IconMenu, IconClose } from "./Icons";
 
 const menuVariants = {
@@ -19,14 +20,15 @@ export default function Navbar({ navRef, menuOpen, toggleMenu }) {
     <>
       <nav
         ref={navRef}
-        className="fixed inset-x-0 top-0 z-[900] flex items-center justify-between border-b border-white/6 bg-[rgba(5,5,5,0.4)] px-[clamp(20px,5vw,64px)] py-[18px] backdrop-blur-[16px] transition-[background] duration-300 ease-out"
+        className="fixed inset-x-0 top-0 z-[900] flex items-center justify-between border-b border-white/6 bg-[rgba(5,5,5,0.4)] px-[clamp(20px,5vw,64px)] py-3 backdrop-blur-[16px] transition-[background] duration-300 ease-out"
       >
         <a
           href="#top"
           data-cursor-hover="true"
-          className="font-display text-[18px] font-bold tracking-[-0.01em] text-ink"
+          className="inline-flex min-h-10 items-center gap-2.5 font-display text-[17px] font-semibold tracking-[-0.025em] text-ink transition-colors hover:text-accent"
         >
-          VR<span className="text-accent">.</span>
+          <BrandMark className="h-9 w-9 shrink-0 rounded-lg ring-1 ring-accent/20" />
+          {site.name}
         </a>
 
         <div className="hidden items-center gap-9 min-[860px]:flex">
@@ -47,7 +49,7 @@ export default function Navbar({ navRef, menuOpen, toggleMenu }) {
           ))}
         </div>
 
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-4 min-[860px]:hidden">
           <button
             onClick={toggleMenu}
             aria-label={menuOpen ? "Close menu" : "Open menu"}
