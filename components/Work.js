@@ -2,102 +2,93 @@
 
 import { useEffect, useRef, useState } from "react";
 import dynamic from "next/dynamic";
-import { motion } from "framer-motion";
 import SectionEyebrow from "./SectionEyebrow";
 import ImagePlaceholder from "./ImagePlaceholder";
 import { featuredProjects, otherProjects } from "@/lib/content";
-import { fadeInUp, staggerContainer, staggerItem, revealViewport } from "@/lib/motion";
 
 const WorkGeometry = dynamic(() => import("./WorkGeometry"), { ssr: false });
+const [leadProject, ...supportingProjects] = featuredProjects;
+
+function ProjectCard({ project, lead = false, featured = false }) {
+  return (
+    <article
+      className={`group grid overflow-hidden rounded-2xl border border-white/12 bg-[#111713] transition-colors hover:border-accent/35 ${
+        lead ? "md:grid-cols-[1.75fr_1fr]" : "grid-rows-[auto_1fr]"
+      }`}
+    >
+      <div className={`relative overflow-hidden bg-[#0c110e] ${lead ? "aspect-[16/9] md:aspect-auto md:min-h-80" : "aspect-[16/9]"}`}>
+        <ImagePlaceholder
+          label={project.imgPlaceholder}
+          src={project.img}
+          sizes={lead ? "(min-width: 1280px) 740px, (min-width: 768px) 58vw, 90vw" : featured
+            ? "(min-width: 1280px) 580px, (min-width: 640px) 45vw, 90vw"
+            : "(min-width: 1280px) 375px, (min-width: 1024px) 30vw, (min-width: 640px) 45vw, 90vw"}
+        />
+      </div>
+      <div className={`flex min-w-0 flex-col gap-3 border-white/10 ${
+        lead ? "justify-center border-t p-[clamp(1.5rem,3.5vw,3rem)] md:border-t-0 md:border-l" : "border-t p-5 sm:p-6"
+      }`}>
+        <h3 className={`font-display font-semibold tracking-[-0.035em] ${lead ? "text-[clamp(2rem,4vw,3.25rem)] leading-none" : "text-2xl leading-tight"}`}>
+          {project.name}
+        </h3>
+        <p className="text-base leading-relaxed text-ink-2">{project.oneLiner}</p>
+        <ul aria-label="Technologies" className={`flex flex-wrap gap-2 pt-2 ${lead ? "" : "mt-auto"}`}>
+          {project.tech.map((tech) => (
+            <li key={tech} className="rounded-md border border-accent/15 bg-accent/6 px-2.5 py-1 text-[0.8125rem] text-accent">
+              {tech}
+            </li>
+          ))}
+        </ul>
+      </div>
+    </article>
+  );
+}
 
 export default function Work() {
-  const sectionRef = useRef(null);
-  const [show3D, setShow3D] = useState(false);
+  const headingRef = useRef(null);
+  const [showGeometry, setShowGeometry] = useState(false);
 
   useEffect(() => {
-    const reduced =
-      typeof window !== "undefined" &&
-      window.matchMedia &&
-      window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    if (reduced || !sectionRef.current) return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches || !headingRef.current) return;
 
-    const io = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            setShow3D(true);
-            io.disconnect();
-          }
-        });
-      },
-      { threshold: 0.2 }
-    );
-    io.observe(sectionRef.current);
-    return () => io.disconnect();
+    const observer = new IntersectionObserver(([entry]) => {
+      if (entry.isIntersecting) {
+        setShowGeometry(true);
+        observer.disconnect();
+      }
+    }, { rootMargin: "0px 0px 120px 0px" });
+
+    observer.observe(headingRef.current);
+    return () => observer.disconnect();
   }, []);
 
   return (
-    <section
-      id="work"
-      ref={sectionRef}
-      className="relative mx-auto max-w-[1180px] px-[clamp(20px,6vw,64px)] py-[clamp(80px,10vw,140px)]"
-    >
-      {show3D && (
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 1.4, ease: "easeOut" }}
-          className="pointer-events-none absolute inset-x-0 top-0 z-0 h-[clamp(320px,40vw,480px)]"
-        >
+    <section id="work" aria-labelledby="work-title" className="portfolio-shell relative isolate py-[clamp(3.75rem,8vw,7.5rem)]">
+      {showGeometry && (
+        <div aria-hidden="true" className="pointer-events-none absolute inset-x-0 top-0 -z-10 hidden h-[320px] opacity-60 motion-reduce:hidden md:block">
           <WorkGeometry />
-        </motion.div>
+        </div>
       )}
-
-      <motion.div
-        variants={fadeInUp}
-        initial="hidden"
-        whileInView="visible"
-        viewport={revealViewport}
-        className="relative z-10 mx-auto mb-16 max-w-[640px] text-center"
-      >
-        <SectionEyebrow label="Selected Work" centered />
-        <h2 className="m-0 font-display text-[clamp(30px,4vw,44px)] font-semibold tracking-[-0.02em]">
-          Products people actually use.
+      <div ref={headingRef} className="mb-9 sm:mb-12">
+        <SectionEyebrow label="Portfolio" />
+        <h2 id="work-title" className="font-display text-[clamp(2.75rem,6vw,5rem)] font-semibold leading-none tracking-[-0.07em]">
+          Selected work<span className="text-accent">.</span>
         </h2>
-      </motion.div>
+      </div>
 
-      <motion.div
-        variants={staggerContainer}
-        initial="hidden"
-        whileInView="visible"
-        viewport={revealViewport}
-        className="relative z-10 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3"
-        style={{ gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))" }}
-      >
-        {[...featuredProjects, ...otherProjects].map((proj) => (
-          <motion.div
-            key={proj.name}
-            variants={staggerItem}
-            data-tilt="true"
-            className="group flex flex-col overflow-hidden rounded-[20px] border border-white/8 bg-card-2"
-          >
-            <div style={{ aspectRatio: "16/10" }}>
-              <ImagePlaceholder label={proj.imgPlaceholder} src={proj.img} />
-            </div>
-            <div className="flex flex-1 flex-col gap-2.5 p-6">
-              <h4 className="m-0 font-display text-lg font-semibold text-ink">{proj.name}</h4>
-              <p className="m-0 flex-1 text-[13.5px] leading-[1.6] text-ink-3">{proj.oneLiner}</p>
-              <div className="mt-1 flex flex-wrap gap-1.5">
-                {proj.tech.map((t) => (
-                  <span key={t} className="rounded-full bg-white/5 px-2.5 py-[5px] text-[11px] text-ink-2">
-                    {t}
-                  </span>
-                ))}
-              </div>
-            </div>
-          </motion.div>
-        ))}
-      </motion.div>
+      <div className="grid gap-4 sm:gap-5">
+        <ProjectCard project={leadProject} lead />
+        <div className="grid gap-4 sm:grid-cols-2 sm:gap-5">
+          {supportingProjects.map((project) => <ProjectCard key={project.name} project={project} featured />)}
+        </div>
+      </div>
+
+      <div className="mt-14 border-t border-white/12 pt-8 sm:mt-20">
+        <h3 className="mb-6 font-display text-2xl font-semibold tracking-tight sm:text-3xl">More projects</h3>
+        <div className="grid gap-4 sm:grid-cols-2 sm:gap-5 lg:grid-cols-3">
+          {otherProjects.map((project) => <ProjectCard key={project.name} project={project} />)}
+        </div>
+      </div>
     </section>
   );
 }

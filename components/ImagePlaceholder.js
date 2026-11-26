@@ -1,6 +1,6 @@
 import Image from "next/image";
 
-export default function ImagePlaceholder({ label, src, className = "" }) {
+export default function ImagePlaceholder({ label, src, className = "", sizes = "(min-width: 768px) 50vw, 100vw" }) {
   if (src) {
     return (
       <div className={`relative h-full w-full overflow-hidden bg-card ${className}`}>
@@ -8,7 +8,7 @@ export default function ImagePlaceholder({ label, src, className = "" }) {
           src={src}
           alt={label}
           fill
-          sizes="(min-width: 768px) 50vw, 100vw"
+          sizes={sizes}
           className="object-cover object-top transition-transform duration-500 ease-out group-hover:scale-[1.04]"
         />
       </div>

@@ -2,171 +2,88 @@
 
 import { useEffect, useState } from "react";
 import dynamic from "next/dynamic";
-import { motion } from "framer-motion";
-import { IconArrowRight } from "./Icons";
+import Image from "next/image";
+import { site } from "@/lib/content";
 import Shine from "./Shine";
 
 const HeroNetwork = dynamic(() => import("./HeroNetwork"), { ssr: false });
 
-const mk = (s, accentLast) =>
-  s.split("").map((c, i) => ({
-    ch: c === " " ? " " : c,
-    color: accentLast && i === s.length - 1 ? "#6EE7B7" : accentLast ? "#ffffff" : "#b4b4b4",
-    big: !!accentLast,
-  }));
-
-const heroLine1 = mk("Hi, I'm", false);
-const heroLine2 = mk("Vamsi Revada.", true);
-
-export default function Hero({ blob1Ref, blob2Ref, blob3Ref, heroSubRef, heroCtaRef }) {
-  const [particles, setParticles] = useState([]);
-  const [show3D, setShow3D] = useState(false);
+export default function Hero() {
+  const [showNetwork, setShowNetwork] = useState(false);
 
   useEffect(() => {
-    setParticles(
-      Array.from({ length: 18 }).map(() => ({
-        left: Math.random() * 100,
-        top: 40 + Math.random() * 55,
-        size: 2 + Math.random() * 3,
-        dur: 8 + Math.random() * 10,
-        delay: Math.random() * 8,
-      }))
-    );
-  }, []);
+    const query = window.matchMedia("(min-width: 900px) and (prefers-reduced-motion: no-preference)");
+    let timer;
 
-  useEffect(() => {
-    const reduced =
-      typeof window !== "undefined" &&
-      window.matchMedia &&
-      window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    if (reduced) return;
-    // Deferred until well after the hero text reveal (~2.4s) finishes, so
-    // downloading/mounting the 3D scene can never delay LCP.
-    const timer = setTimeout(() => setShow3D(true), 2200);
-    return () => clearTimeout(timer);
+    function updateNetwork() {
+      clearTimeout(timer);
+      if (query.matches) {
+        timer = setTimeout(() => setShowNetwork(true), 2200);
+      } else {
+        setShowNetwork(false);
+      }
+    }
+
+    updateNetwork();
+    query.addEventListener("change", updateNetwork);
+    return () => {
+      clearTimeout(timer);
+      query.removeEventListener("change", updateNetwork);
+    };
   }, []);
 
   return (
-    <section
-      id="top"
-      className="relative flex min-h-screen flex-col items-center justify-center px-[clamp(20px,6vw,64px)] pt-[140px] pb-[80px] text-center"
-    >
-      <div
-        ref={blob1Ref}
-        className="pointer-events-none absolute top-[-10%] left-[-10%] h-[520px] w-[520px] animate-[blobFloatA_14s_ease-in-out_infinite] rounded-full blur-[40px]"
-        style={{ background: "radial-gradient(circle, rgba(110,231,183,0.22), transparent 70%)" }}
-      />
-      <div
-        ref={blob2Ref}
-        className="pointer-events-none absolute right-[-10%] bottom-[-15%] h-[600px] w-[600px] animate-[blobFloatB_18s_ease-in-out_infinite] rounded-full blur-[50px]"
-        style={{ background: "radial-gradient(circle, rgba(79,140,255,0.15), transparent 70%)" }}
-      />
-      <div
-        ref={blob3Ref}
-        className="pointer-events-none absolute top-[30%] right-[20%] h-[380px] w-[380px] animate-[blobFloatC_16s_ease-in-out_infinite] rounded-full blur-[45px]"
-        style={{ background: "radial-gradient(circle, rgba(110,231,183,0.12), transparent 70%)" }}
-      />
-
-      {particles.map((p, i) => (
-        <div
-          key={i}
-          className="pointer-events-none absolute rounded-full bg-accent"
-          style={{
-            left: `${p.left}%`,
-            top: `${p.top}%`,
-            width: `${p.size}px`,
-            height: `${p.size}px`,
-            animation: `particleFloat ${p.dur}s ease-in-out infinite`,
-            animationDelay: `${p.delay}s`,
-          }}
-        />
-      ))}
-
-      {show3D && (
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 1.4, ease: "easeOut" }}
-          className="pointer-events-none absolute inset-0 z-1"
-        >
+    <section id="top" aria-labelledby="hero-title" className="portfolio-hero relative isolate">
+      {showNetwork && (
+        <div aria-hidden="true" className="pointer-events-none absolute inset-y-0 right-0 -z-10 w-3/4 opacity-50">
           <HeroNetwork />
-        </motion.div>
+        </div>
       )}
 
-      <div className="relative z-3 flex max-w-[900px] flex-col items-center gap-7">
-        <div
-          data-hero-badge="true"
-          className="flex items-center gap-2.5 rounded-full border border-white/10 bg-white/3 px-4 py-2 opacity-0"
-        >
-          <span data-status-dot="true" className="h-[7px] w-[7px] rounded-full bg-accent shadow-[0_0_10px_#6EE7B7]" />
-          <span className="text-[13px] tracking-[0.02em] text-ink-2">Available for freelance projects</span>
+      <div className="portfolio-shell grid items-center gap-12 pt-28 pb-14 md:pt-32 md:pb-20 min-[900px]:grid-cols-[minmax(0,1.35fr)_minmax(0,0.85fr)] min-[900px]:gap-16">
+        <div>
+          <div className="mb-7 flex items-center gap-2.5 text-sm font-semibold text-accent sm:mb-9">
+            <span aria-hidden="true" className="h-2 w-2 shrink-0 rounded-full bg-accent shadow-[0_0_18px_#6ee7b766]" />
+            Available for freelance projects
+          </div>
+          <p className="mb-3 font-mono text-[0.82rem] font-medium tracking-[0.14em] text-ink-2 uppercase">
+            {site.role}
+          </p>
+          <h1 id="hero-title" className="font-display text-[clamp(3.25rem,8.2vw,7.25rem)] font-bold leading-[0.92] tracking-[-0.085em]">
+            Vamsi<br />Revada<span className="text-accent">.</span>
+          </h1>
+          <p className="mt-7 max-w-md text-[clamp(1.05rem,1.5vw,1.25rem)] leading-[1.65] text-ink-2">
+            I build web and mobile apps, from real-time platforms to AI-powered products.
+          </p>
+          <div className="mt-8 flex flex-wrap gap-3">
+            <a
+              href="#work"
+              className="group relative isolate inline-flex min-h-12 items-center overflow-hidden rounded-lg bg-accent px-5 py-3 text-sm font-bold text-canvas"
+            >
+              <span className="relative z-10">View selected work</span>
+              <Shine />
+            </a>
+            <a
+              href="#contact"
+              className="inline-flex min-h-12 items-center rounded-lg border border-white/18 bg-canvas/35 px-5 py-3 text-sm font-bold text-ink transition-colors hover:border-accent/60 hover:text-accent"
+            >
+              Get in touch
+            </a>
+          </div>
         </div>
 
-        <h1 className="m-0 font-display text-[clamp(44px,8vw,92px)] font-bold leading-[1.02] tracking-[-0.03em]">
-          <div className="overflow-hidden pb-1.5">
-            <div className="flex flex-wrap justify-center">
-              {heroLine1.map((ch, i) => (
-                <span
-                  key={i}
-                  data-hero-letter="true"
-                  className="inline-block text-[clamp(20px,3vw,32px)] font-semibold opacity-0"
-                  style={{ color: ch.color, transform: "translateY(40px)" }}
-                >
-                  {ch.ch}
-                </span>
-              ))}
-            </div>
+        <div className="hero-portrait relative mx-auto w-full max-w-[400px] min-[900px]:mr-2">
+          <div className="relative aspect-[4/4.55] overflow-hidden rounded-[inherit] bg-card-2">
+            <Image
+              src="/portrait.png"
+              alt={site.name}
+              fill
+              priority
+              sizes="(min-width: 900px) 400px, (min-width: 465px) 400px, 90vw"
+              className="object-cover object-[center_38%]"
+            />
           </div>
-          <div className="overflow-hidden pb-2.5">
-            <div className="flex flex-wrap justify-center">
-              {heroLine2.map((ch, i) => (
-                <span
-                  key={i}
-                  data-hero-letter="true"
-                  className="inline-block opacity-0"
-                  style={{ color: ch.color, transform: "translateY(40px)" }}
-                >
-                  {ch.ch}
-                </span>
-              ))}
-            </div>
-          </div>
-        </h1>
-
-        <p
-          ref={heroSubRef}
-          className="m-0 max-w-[560px] text-[clamp(16px,1.6vw,19px)] leading-[1.7] text-ink-2 opacity-0"
-          style={{ transform: "translateY(16px)" }}
-        >
-          I build premium web and mobile applications that scale — from real-time platforms to AI-powered products.
-        </p>
-
-        <div
-          ref={heroCtaRef}
-          className="flex flex-wrap justify-center gap-4 opacity-0"
-          style={{ transform: "translateY(16px)" }}
-        >
-          <a
-            href="#work"
-            data-magnetic="true"
-            data-cursor-hover="true"
-            className="group relative isolate inline-flex items-center overflow-hidden rounded-full bg-accent px-8 py-4 text-[15px] font-bold text-canvas shadow-[0_20px_50px_-12px_rgba(110,231,183,0.4)]"
-          >
-            <span className="relative z-10 inline-flex items-center gap-2">
-              View Projects
-              <IconArrowRight className="h-4 w-4" />
-            </span>
-            <Shine />
-          </a>
         </div>
-      </div>
-
-      <div className="absolute bottom-8 left-1/2 flex -translate-x-1/2 flex-col items-center gap-2 animate-[bounceCue_2.4s_ease-in-out_infinite]">
-        <span className="text-[11px] uppercase tracking-[0.2em] text-ink-4">Scroll</span>
-        <div
-          className="h-9 w-px"
-          style={{ background: "linear-gradient(to bottom, #6EE7B7, transparent)" }}
-        />
       </div>
     </section>
   );

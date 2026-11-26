@@ -1,105 +1,47 @@
-import Image from "next/image";
-import { motion } from "framer-motion";
 import SectionEyebrow from "./SectionEyebrow";
 import { differentiators, techStack } from "@/lib/content";
-import { fadeInUp, staggerContainer, staggerItem, revealViewport } from "@/lib/motion";
 
 export default function About() {
   return (
-    <section
-      id="about"
-      className="relative mx-auto max-w-295 px-[clamp(20px,6vw,64px)] py-[clamp(80px,10vw,140px)]"
-    >
-      <div className="grid grid-cols-1 items-start gap-[clamp(40px,6vw,80px)] md:grid-cols-[1.1fr_0.9fr]">
-        <motion.div
-          variants={fadeInUp}
-          initial="hidden"
-          whileInView="visible"
-          viewport={revealViewport}
-        >
+    <section id="about" className="border-y border-white/10 bg-[#0c100e]">
+      <div className="portfolio-shell grid items-start gap-10 py-[clamp(3.75rem,8vw,7rem)] md:grid-cols-[1.1fr_0.9fr] md:gap-16">
+        <div>
           <SectionEyebrow label="About" />
-          <h2 className="m-0 mb-6 font-display text-[clamp(30px,4vw,44px)] font-semibold leading-[1.15] tracking-[-0.02em]">
+          <h2 className="max-w-xl font-display text-[clamp(2rem,4vw,3.5rem)] font-semibold leading-[1.06] tracking-[-0.05em]">
             I turn ambitious ideas into fast, reliable software.
           </h2>
-          <p className="m-0 mb-5 text-[17px] leading-[1.8] text-ink-2">
-            I&apos;m a full-stack developer and freelancer who partners directly with founders to design, build and
-            ship products end-to-end. Over the past five years I&apos;ve shipped real-time platforms, mobile apps
-            and AI-powered products for teams who need to move fast without cutting corners.
+          <p className="mt-5 max-w-xl text-base leading-[1.8] text-ink-2">
+            I&apos;m a full-stack developer and freelancer who partners directly with founders to design, build and ship products end to end. I&apos;ve worked on real-time platforms, mobile apps and AI-powered products.
           </p>
-          <p className="m-0 mb-9 text-[17px] leading-[1.8] text-ink-2">
-            I care about the details most people skip — the loading state, the empty state, the millisecond of
-            latency. That&apos;s what separates good software from great software.
-          </p>
-
-          <div className="mb-10 flex flex-col gap-5">
-            {differentiators.map((d) => (
-              <div key={d.n} className="flex items-start gap-4">
-                <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-[10px] border border-accent/25 bg-accent/10 text-[15px] font-bold text-accent">
-                  {d.n}
-                </div>
-                <div>
-                  <div className="mb-1 text-[15px] font-bold text-ink">{d.title}</div>
-                  <div className="text-sm leading-[1.6] text-ink-3">{d.desc}</div>
-                </div>
-              </div>
+          <ul aria-label="Technology stack" className="mt-7 flex flex-wrap gap-2">
+            {techStack.map((tech) => (
+              <li key={tech} className="rounded-md border border-white/12 bg-white/4 px-3 py-1.5 text-[0.8125rem] text-ink-2">
+                {tech}
+              </li>
             ))}
-          </div>
+          </ul>
+        </div>
 
-          <motion.div
-            variants={staggerContainer}
-            initial="hidden"
-            whileInView="visible"
-            viewport={revealViewport}
-            className="flex flex-wrap gap-2.5"
-          >
-            {techStack.map((t) => (
-              <motion.span
-                key={t}
-                variants={staggerItem}
-                data-cursor-hover="true"
-                className="rounded-full border border-white/8 bg-card px-4 py-2.25 text-[13px] text-[#d4d4d4] transition-[transform,border-color,color] duration-250 ease-out hover:-translate-y-0.75 hover:border-accent/50 hover:text-accent"
-              >
-                {t}
-              </motion.span>
+        <div>
+          <dl className="grid grid-cols-2 gap-5 border-b border-white/12 pb-6">
+            <div>
+              <dt className="text-sm text-ink-2">Years of experience</dt>
+              <dd className="mt-2 font-display text-4xl font-bold text-accent">5+</dd>
+            </div>
+            <div>
+              <dt className="text-sm text-ink-2">Projects shipped</dt>
+              <dd className="mt-2 font-display text-4xl font-bold text-accent">7+</dd>
+            </div>
+          </dl>
+          <ul className="divide-y divide-white/12">
+            {differentiators.map(({ title, desc }) => (
+              <li key={title} className="py-4">
+                <h3 className="text-base font-bold">{title}</h3>
+                <p className="mt-1 text-sm leading-relaxed text-ink-2">{desc}</p>
+              </li>
             ))}
-          </motion.div>
-        </motion.div>
-
-        <motion.div
-          variants={{
-            hidden: fadeInUp.hidden,
-            visible: { ...fadeInUp.visible, transition: { ...fadeInUp.visible.transition, delay: 0.15 } },
-          }}
-          initial="hidden"
-          whileInView="visible"
-          viewport={revealViewport}
-          className="flex flex-col gap-5"
-        >
-          <div
-            data-tilt="true"
-            className="relative overflow-hidden rounded-3xl border border-white/8 transition-transform duration-200 ease-out"
-            style={{ aspectRatio: "4/5" }}
-          >
-            <Image
-              src="/portrait.png"
-              alt="Vamsi Revada"
-              fill
-              sizes="(min-width: 768px) 40vw, 90vw"
-              className="object-cover"
-              priority
-            />
-          </div>
-          <div className="grid grid-cols-2 gap-4">
-            <div className="rounded-2xl border border-white/8 bg-card p-5">
-              <div className="font-display text-[28px] font-bold text-ink">5+</div>
-              <div className="mt-1 text-[13px] text-ink-3">Years experience</div>
-            </div>
-            <div className="rounded-2xl border border-white/8 bg-card p-5">
-              <div className="font-display text-[28px] font-bold text-ink">7+</div>
-              <div className="mt-1 text-[13px] text-ink-3">Projects shipped</div>
-            </div>
-          </div>
-        </motion.div>
+          </ul>
+        </div>
       </div>
     </section>
   );
