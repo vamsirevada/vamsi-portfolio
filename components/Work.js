@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 import { featuredProjects, otherProjects } from "@/lib/content";
 
 const [leadProject, ...supportingProjects] = featuredProjects;
@@ -37,6 +38,11 @@ function ProjectCard({ project, lead = false, featured = false, heading = "h3" }
             </li>
           ))}
         </ul>
+        {project.caseStudyHref && (
+          <Link href={project.caseStudyHref} className="mt-1 inline-flex min-h-11 items-center self-start rounded-lg border border-accent/35 px-4 text-sm font-semibold text-accent transition-colors hover:bg-accent/10">
+            Read the {project.name} case study
+          </Link>
+        )}
       </div>
     </article>
   );

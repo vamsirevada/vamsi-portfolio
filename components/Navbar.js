@@ -1,6 +1,7 @@
 "use client";
 
 import { useRef } from "react";
+import Link from "next/link";
 import { navLinks, site } from "@/lib/content";
 import BrandMark from "./BrandMark";
 
@@ -21,13 +22,13 @@ export default function Navbar() {
   return (
     <header className="fixed inset-x-0 top-0 z-50 border-b border-white/12 bg-canvas/90 backdrop-blur-md">
       <nav aria-label="Main" className="portfolio-shell flex min-h-16 items-center justify-between gap-4">
-        <a href="#top" onClick={closeMenu} className="inline-flex min-h-10 items-center gap-2.5 font-display text-[17px] font-semibold tracking-tight text-ink hover:text-accent">
+        <Link href="/#top" onClick={closeMenu} className="inline-flex min-h-10 items-center gap-2.5 font-display text-[17px] font-semibold tracking-tight text-ink hover:text-accent">
           <BrandMark className="h-9 w-9 shrink-0 rounded-lg ring-1 ring-accent/20" />
           {site.name}
-        </a>
+        </Link>
         <ul className="hidden items-center gap-7 min-[720px]:flex">
           {navLinks.map(({ href, label }) => (
-            <li key={href}><a href={href} className="text-sm font-semibold text-ink-2 hover:text-accent">{label}</a></li>
+            <li key={href}><Link href={`/${href}`} className="text-sm font-semibold text-ink-2 hover:text-accent">{label}</Link></li>
           ))}
         </ul>
         <details ref={menu} onKeyDown={closeOnEscape} className="relative min-[720px]:hidden">
@@ -38,7 +39,7 @@ export default function Navbar() {
           <ul className="absolute right-0 top-full mt-2 w-48 rounded-xl border border-white/15 bg-card p-1.5 shadow-xl">
             {navLinks.map(({ href, label }) => (
               <li key={href}>
-                <a href={href} onClick={closeMenu} className="block rounded-lg px-3 py-3 text-sm font-semibold text-ink hover:bg-white/8 hover:text-accent">{label}</a>
+                <Link href={`/${href}`} onClick={closeMenu} className="block rounded-lg px-3 py-3 text-sm font-semibold text-ink hover:bg-white/8 hover:text-accent">{label}</Link>
               </li>
             ))}
           </ul>

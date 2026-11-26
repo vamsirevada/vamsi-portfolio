@@ -17,7 +17,7 @@ const STATUS_MESSAGES = {
   validation: "Please fill in all fields.",
   error: "Your message could not be sent.",
   not_configured: "Online sending is currently unavailable.",
-  success: "Thanks for reaching out. I’ll get back to you soon.",
+  success: "Thanks. I’ll review your brief and follow up by email.",
 };
 
 export default function Contact() {
@@ -67,11 +67,17 @@ export default function Contact() {
         <div>
           <SectionEyebrow label="Contact" />
           <h2 id="contact-title" className="font-display text-[clamp(2.5rem,5.2vw,4.75rem)] font-semibold leading-[0.98] tracking-[-0.065em]">
-            Let&apos;s talk about your project<span className="text-accent">.</span>
+            Tell me about your project<span className="text-accent">.</span>
           </h2>
           <p className="mt-5 max-w-sm text-base leading-relaxed text-ink-2">
-            Tell me what you&apos;re building, what you need help with, and when you&apos;d like to get started.
+            I&apos;ll read your brief and follow up by email. If it looks like a fit, we&apos;ll set up a short call to discuss what you need.
           </p>
+          <div className="mt-5 max-w-sm border-l border-accent/35 pl-4">
+            <h3 className="text-sm font-semibold text-ink">Need help defining the scope?</h3>
+            <p className="mt-1.5 text-sm leading-relaxed text-ink-2">
+              We can start with a paid scoping sprint. You&apos;ll get a map of the workflow, a prioritized build plan, and an estimate.
+            </p>
+          </div>
           <a href={`mailto:${site.email}`} className="mt-6 inline-block text-base font-bold text-accent underline decoration-accent/35 underline-offset-4 hover:decoration-accent">
             {site.email}
           </a>
@@ -106,15 +112,18 @@ export default function Contact() {
             </div>
           </div>
           <div>
-            <label htmlFor="contact-message" className={labelClass}>Project details</label>
-            <textarea id="contact-message" name="message" rows={5} maxLength={5000} required className={`${inputClass} resize-y`} />
+            <label htmlFor="contact-message" className={labelClass}>What are you building or improving?</label>
+            <p id="contact-message-help" className="mb-2 text-sm leading-relaxed text-ink-2">
+              Share the workflow, who uses it, and when you&apos;d like to start. A rough brief is fine.
+            </p>
+            <textarea id="contact-message" aria-describedby="contact-message-help" name="message" rows={5} maxLength={5000} required className={`${inputClass} resize-y`} />
           </div>
           <button
             type="submit"
             disabled={status === "sending"}
             className="min-h-12 cursor-pointer justify-self-start rounded-lg bg-accent px-6 py-3 text-sm font-bold text-canvas transition-colors hover:bg-[#96f0cd] disabled:cursor-not-allowed disabled:opacity-70"
           >
-            {status === "sending" ? "Sending…" : "Send message"}
+            {status === "sending" ? "Sending…" : "Send project inquiry"}
           </button>
           <div role="status" className={`text-sm leading-relaxed ${status === "success" ? "text-accent" : "text-red-300"}`}>
             {STATUS_MESSAGES[status]}
