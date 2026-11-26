@@ -88,4 +88,4 @@ npm run build
 npm start
 ```
 
-Note: use the default Webpack build (`next build`, not `--turbopack`) — Turbopack's font fetcher can fail to reach Google Fonts in some sandboxed environments.
+The Manrope and Space Grotesk fonts are bundled in `app/fonts`, so builds can compile without fetching fonts from Google.
