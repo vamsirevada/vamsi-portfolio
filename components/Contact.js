@@ -4,7 +4,7 @@ import { useState } from "react";
 import SectionEyebrow from "./SectionEyebrow";
 import { site } from "@/lib/content";
 
-const inputClass = "w-full rounded-lg border border-white/15 bg-black/25 px-4 py-3.5 text-base text-ink placeholder:text-ink-3 focus:border-accent focus:outline-none";
+const inputClass = "w-full rounded-lg border border-white/18 bg-black/20 px-4 py-3.5 text-base text-ink placeholder:text-ink-3 focus:border-accent focus:outline-none";
 const labelClass = "mb-2 block text-sm font-semibold text-ink";
 
 const profiles = [
@@ -63,7 +63,7 @@ export default function Contact() {
 
   return (
     <section id="contact" aria-labelledby="contact-title" className="portfolio-shell py-[clamp(3.75rem,8vw,7.5rem)]">
-      <div className="grid gap-9 rounded-2xl border border-accent/20 bg-[linear-gradient(135deg,#14241b,#0b100d_65%)] p-[clamp(1.25rem,4vw,3.5rem)] lg:grid-cols-[1fr_1.1fr] lg:gap-14">
+      <div className="grid items-start gap-8 rounded-2xl border border-accent/20 bg-[linear-gradient(140deg,#15281e,#0b100d_75%)] p-[clamp(1.25rem,4vw,3.5rem)] lg:grid-cols-[1fr_1.1fr] lg:gap-12">
         <div>
           <SectionEyebrow label="Contact" />
           <h2 id="contact-title" className="font-display text-[clamp(2.5rem,5.2vw,4.75rem)] font-semibold leading-[0.98] tracking-[-0.065em]">
@@ -97,7 +97,7 @@ export default function Contact() {
           </ul>
         </div>
 
-        <form onSubmit={sendMessage} className="relative grid min-w-0 content-start gap-4">
+        <form onSubmit={sendMessage} className="relative grid min-w-0 content-start gap-4 border-t border-white/15 pt-6 lg:border-t-0 lg:border-l lg:pt-0 lg:pl-9">
           <div className="absolute h-0 w-0 overflow-hidden opacity-0" aria-hidden="true">
             <input type="text" name="company" tabIndex={-1} autoComplete="off" aria-label="Company" />
           </div>

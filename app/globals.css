@@ -82,19 +82,78 @@
   content: "";
 }
 
-.hero-portrait {
-  border: 1px solid rgb(215 255 232 / 25%);
-  border-radius: 0.875rem;
-  padding: 0.375rem;
-  background-color: #132019;
-  box-shadow: 0 26px 64px rgb(0 0 0 / 40%);
+.home-hero {
+  border-bottom: 1px solid rgb(255 255 255 / 12%);
+  background:
+    radial-gradient(ellipse at 84% 42%, #203d31, #101b16 37%, transparent 70%),
+    #090d0b;
 }
 
-.hero-portrait::after {
-  position: absolute;
-  z-index: -1;
-  inset: 0.75rem -0.6rem -0.6rem 0.75rem;
-  border: 1px solid rgb(110 231 183 / 31%);
-  border-radius: inherit;
-  content: "";
+.home-hero-layout {
+  display: grid;
+  align-items: center;
+  gap: clamp(2rem, 5vw, 5rem);
+  padding-block: clamp(6.2rem, 11vw, 9.5rem) clamp(2.75rem, 6vw, 5rem);
+}
+
+.home-project-gallery {
+  display: grid;
+  align-items: start;
+  gap: 0.85rem;
+  min-width: 0;
+}
+
+.home-project-preview {
+  display: block;
+  overflow: hidden;
+  border: 1px solid rgb(221 255 238 / 17%);
+  border-radius: 0.875rem;
+  background: #131d18;
+  box-shadow: 0 16px 34px rgb(0 0 0 / 24%);
+  transition: border-color 180ms ease, background-color 180ms ease;
+}
+
+.home-project-preview:hover {
+  border-color: rgb(110 231 183 / 55%);
+  background: #1a2c23;
+}
+
+.home-project-image {
+  overflow: hidden;
+  background: #0e1712;
+  border-bottom: 1px solid rgb(221 255 238 / 12%);
+}
+
+.home-project-image img {
+  transition: transform 220ms ease;
+}
+
+.home-project-preview:is(:hover, :focus-visible) .home-project-image img {
+  transform: scale(1.035);
+}
+
+.home-project-preview:is(:hover, :focus-visible) .home-project-label {
+  text-decoration: underline;
+  text-underline-offset: 0.25em;
+}
+
+@media (min-width: 600px) and (max-width: 879px) {
+  .home-project-gallery {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 880px) {
+  .home-hero-layout {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    padding-top: clamp(6.35rem, 8vw, 8rem);
+  }
+
+  .home-project-preview:first-child {
+    margin-right: 6%;
+  }
+
+  .home-project-preview:nth-child(2) {
+    margin-left: 13%;
+  }
 }
