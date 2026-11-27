@@ -7,11 +7,10 @@ export default function ExperienceProcess() {
         <section aria-labelledby="experience-title">
           <h2 id="experience-title" className="mb-5 font-display text-3xl font-semibold tracking-tight">Experience</h2>
           <ol className="divide-y divide-white/12 border-t border-white/12">
-            {timelineItems.map(({ year, title, desc }) => (
+            {timelineItems.map(({ year, title }) => (
               <li key={year} className="py-4">
                 <p className="mb-1 text-sm font-semibold text-accent">{year}</p>
                 <h3 className="font-display text-lg font-semibold">{title}</h3>
-                <p className="mt-1 text-sm leading-relaxed text-ink-2">{desc}</p>
               </li>
             ))}
           </ol>
@@ -19,9 +18,9 @@ export default function ExperienceProcess() {
         <section id="process" aria-labelledby="process-title">
           <h2 id="process-title" className="mb-5 font-display text-3xl font-semibold tracking-tight">How we work together</h2>
           <ol className="divide-y divide-white/12 border-t border-white/12">
-            {processSteps.map(({ n, title, desc }) => (
+            {processSteps.map(({ title, desc }, index) => (
               <li key={title} className="flex gap-4 py-4">
-                <span aria-hidden="true" className="text-sm font-semibold text-accent">{n}</span>
+                <span aria-hidden="true" className="text-sm font-semibold text-accent">{String(index + 1).padStart(2, "0")}</span>
                 <div>
                   <h3 className="font-display text-lg font-semibold">{title}</h3>
                   <p className="mt-1 text-sm leading-relaxed text-ink-2">{desc}</p>
