@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useRef, useState } from "react";
+import { useId, useRef, useState } from "react";
 import { featuredProjects, otherProjects } from "@/lib/content";
 
 const projects = [...featuredProjects, ...otherProjects];
@@ -26,6 +26,7 @@ function PreviewIcon({ name }) {
 
 function ProjectTile({ project, featured, lead = false, onPreview }) {
   const Heading = featured ? "h3" : "h4";
+  const descriptionId = useId();
 
   return (
     <article className={lead ? "work-feature-lead" : undefined}>
@@ -34,7 +35,7 @@ function ProjectTile({ project, featured, lead = false, onPreview }) {
         type="button"
         className="work-preview-trigger"
         aria-label={`Preview ${project.name}`}
-        aria-description={project.oneLiner}
+        aria-describedby={descriptionId}
         aria-haspopup="dialog"
         onClick={onPreview}
       >
@@ -47,6 +48,7 @@ function ProjectTile({ project, featured, lead = false, onPreview }) {
           className="object-cover object-top"
         />
       </button>
+      <p id={descriptionId} className="sr-only">{project.oneLiner}</p>
     </article>
   );
 }
@@ -201,7 +203,7 @@ export default function Work() {
             {activeProject.caseStudyHref && (
               <Link
                 href={activeProject.caseStudyHref}
-                className="project-icon-button project-case-link"
+                className="project-icon-button"
                 aria-label={`Read ${activeProject.name} case study`}
                 title="Read case study"
                 onClick={closePreview}
