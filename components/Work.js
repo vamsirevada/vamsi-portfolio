@@ -19,32 +19,31 @@ export default function Work() {
 
       <div className="divide-y divide-white/12 border-y border-white/12">
         {featuredProjects.map((project) => (
-          <article key={project.name} className="grid items-start gap-x-8 gap-y-3 py-6 sm:grid-cols-[minmax(0,1fr)_minmax(0,1.8fr)] sm:py-7 min-[920px]:grid-cols-[minmax(0,1fr)_minmax(0,1.8fr)_minmax(0,13rem)]">
-            <h3 className="font-display text-[clamp(1.65rem,2.6vw,2.2rem)] leading-tight font-semibold tracking-tight">
-              {project.name}
-            </h3>
+          <article key={project.name} className="grid items-center gap-5 py-6 md:grid-cols-2 md:gap-8 lg:gap-12 lg:py-8">
+            <Image
+              src={project.img}
+              alt={project.imageAlt}
+              width={1280}
+              height={661}
+              sizes="(min-width: 1280px) 560px, (min-width: 768px) 44vw, 90vw"
+              className="h-auto w-full rounded-xl border border-white/15 bg-card"
+            />
             <div className="min-w-0 space-y-2">
+              <h3 className="font-display text-[clamp(1.65rem,2.6vw,2.2rem)] leading-tight font-semibold tracking-tight">
+                {project.name}
+              </h3>
               <p className="font-semibold text-ink">{project.oneLiner}</p>
               <p className="max-w-xl text-base leading-relaxed text-ink-2">{project.workflow}</p>
               <Technologies items={project.tech} />
+              {project.caseStudyHref && (
+                <Link
+                  href={project.caseStudyHref}
+                  className="inline-flex min-h-11 items-center text-sm font-semibold text-accent underline decoration-accent/40 underline-offset-4 hover:decoration-accent"
+                >
+                  Read the {project.name} case study
+                </Link>
+              )}
             </div>
-            {project.caseStudyHref ? (
-              <Link
-                href={project.caseStudyHref}
-                className="inline-flex min-h-11 w-fit items-center text-sm font-semibold text-accent underline decoration-accent/40 underline-offset-4 hover:decoration-accent sm:max-[919px]:col-start-2 min-[920px]:justify-self-end"
-              >
-                Read the {project.name} case study
-              </Link>
-            ) : (
-              <Image
-                src={project.img}
-                alt={project.imageAlt}
-                width={1280}
-                height={661}
-                sizes="208px"
-                className="aspect-video w-full max-w-52 rounded-lg border border-white/12 object-cover object-top sm:max-[919px]:col-start-2 min-[920px]:justify-self-end"
-              />
-            )}
           </article>
         ))}
       </div>
