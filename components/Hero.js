@@ -1,6 +1,8 @@
 import Image from "next/image";
 import Link from "next/link";
-import { site, waitless } from "@/lib/content";
+import { featuredProjects, site } from "@/lib/content";
+
+const [leadProject] = featuredProjects;
 
 export default function Hero() {
   return (
@@ -24,12 +26,14 @@ export default function Hero() {
             >
               Tell me about your project
             </a>
-            <Link
-              href={waitless.caseStudyHref}
-              className="inline-flex min-h-12 items-center rounded-lg border border-white/18 bg-canvas/35 px-5 py-3 text-sm font-bold text-ink transition-colors hover:border-accent/60 hover:text-accent"
-            >
-              See the Waitless case study
-            </Link>
+            {leadProject.caseStudyHref && (
+              <Link
+                href={leadProject.caseStudyHref}
+                className="inline-flex min-h-12 items-center rounded-lg border border-white/18 bg-canvas/35 px-5 py-3 text-sm font-bold text-ink transition-colors hover:border-accent/60 hover:text-accent"
+              >
+                See the {leadProject.name} case study
+              </Link>
+            )}
           </div>
         </div>
 
