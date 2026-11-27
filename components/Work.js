@@ -10,6 +10,31 @@ function Technologies({ items }) {
   );
 }
 
+function FeaturedProjectImage({ project }) {
+  const screenshot = (
+    <Image
+      src={project.img}
+      alt={project.imageAlt}
+      width={1280}
+      height={661}
+      sizes="(min-width: 1280px) 560px, (min-width: 768px) 44vw, 90vw"
+      className="block h-auto w-full rounded-xl border border-white/15 bg-card"
+    />
+  );
+
+  if (!project.caseStudyHref) return screenshot;
+
+  return (
+    <Link
+      href={project.caseStudyHref}
+      aria-label={`Open the ${project.name} case study`}
+      className="block min-w-0 rounded-xl transition-shadow hover:ring-2 hover:ring-accent/60"
+    >
+      {screenshot}
+    </Link>
+  );
+}
+
 export default function Work() {
   return (
     <section id="work" aria-labelledby="work-title" className="portfolio-shell py-[clamp(3rem,7vw,6rem)]">
@@ -20,14 +45,7 @@ export default function Work() {
       <div className="divide-y divide-white/12 border-y border-white/12">
         {featuredProjects.map((project) => (
           <article key={project.name} className="grid items-center gap-5 py-6 md:grid-cols-2 md:gap-8 lg:gap-12 lg:py-8">
-            <Image
-              src={project.img}
-              alt={project.imageAlt}
-              width={1280}
-              height={661}
-              sizes="(min-width: 1280px) 560px, (min-width: 768px) 44vw, 90vw"
-              className="h-auto w-full rounded-xl border border-white/15 bg-card"
-            />
+            <FeaturedProjectImage project={project} />
             <div className="min-w-0 space-y-2">
               <h3 className="font-display text-[clamp(1.65rem,2.6vw,2.2rem)] leading-tight font-semibold tracking-tight">
                 {project.name}
