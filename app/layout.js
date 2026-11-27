@@ -1,6 +1,7 @@
 import localFont from "next/font/local";
 import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
+import { portfolioDescription, portfolioHeadline, site } from "@/lib/content";
 import "./globals.css";
 
 const spaceGrotesk = localFont({
@@ -18,14 +19,12 @@ const manrope = localFont({
 });
 
 const siteUrl = "https://www.vamsirevada.com";
-const title = "Vamsi Revada — Full-Stack Developer & Freelancer";
-const description =
-  "I build premium web and mobile applications that scale — from real-time platforms to AI-powered products. Full-stack developer available for freelance projects.";
+const title = `${portfolioHeadline} | ${site.name}`;
 
 export const metadata = {
   metadataBase: new URL(siteUrl),
   title,
-  description,
+  description: portfolioDescription,
   keywords: [
     "Vamsi Revada",
     "full-stack developer",
@@ -38,7 +37,7 @@ export const metadata = {
   creator: "Vamsi Revada",
   openGraph: {
     title,
-    description,
+    description: portfolioDescription,
     url: siteUrl,
     siteName: "Vamsi Revada",
     type: "website",
@@ -46,7 +45,7 @@ export const metadata = {
   twitter: {
     card: "summary_large_image",
     title,
-    description,
+    description: portfolioDescription,
   },
   robots: { index: true, follow: true },
 };

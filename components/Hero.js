@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import { featuredProjects, site } from "@/lib/content";
+import { featuredProjects, portfolioHeadline, site } from "@/lib/content";
 
 const [leadProject] = featuredProjects;
 
@@ -14,7 +14,7 @@ export default function Hero() {
             Available for freelance projects
           </div>
           <h1 id="hero-title" className="max-w-[19ch] text-balance font-display text-[clamp(2.35rem,5.3vw,4.8rem)] font-bold leading-[0.98] tracking-[-0.065em]">
-            Booking and operations software for founders<span className="text-accent">.</span>
+            {portfolioHeadline}<span className="text-accent">.</span>
           </h1>
           <p className="mt-7 max-w-md text-[clamp(1.05rem,1.5vw,1.25rem)] leading-[1.65] text-ink-2">
             I build web and mobile apps that help teams take reservations, track availability, and replace manual workflows.
