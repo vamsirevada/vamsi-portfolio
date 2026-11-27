@@ -37,7 +37,7 @@ function FeaturedProject({ project, lead, onPreview }) {
             priority={lead}
             className="block h-auto w-full"
           />
-          <span className="work-preview-label" aria-hidden="true">Preview</span>
+          <span className="work-preview-label" aria-hidden="true">{project.previewClip ? "Play clip" : "Preview"}</span>
         </button>
         <div className="space-y-2 px-4 py-4 sm:px-5">
           <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
@@ -58,14 +58,49 @@ function FeaturedProject({ project, lead, onPreview }) {
   );
 }
 
+function ProjectPreviewMedia({ project, autoPlay }) {
+  const [videoFailed, setVideoFailed] = useState(false);
+  const clip = project.previewClip;
+
+  return (
+    <div className="project-preview-media">
+      {clip && !videoFailed ? (
+        <video
+          className="project-preview-image h-full w-full object-contain"
+          src={clip.src}
+          poster={clip.poster}
+          aria-label={clip.description}
+          autoPlay={autoPlay}
+          muted
+          playsInline
+          controls
+          preload="metadata"
+          onError={() => setVideoFailed(true)}
+        />
+      ) : (
+        <Image
+          src={project.img}
+          alt={project.imageAlt}
+          fill
+          loading="eager"
+          sizes="(min-width: 1320px) 1280px, 94vw"
+          className="project-preview-image object-contain"
+        />
+      )}
+    </div>
+  );
+}
+
 export default function Work() {
   const dialog = useRef(null);
   const trigger = useRef(null);
   const [activeIndex, setActiveIndex] = useState(null);
+  const [autoPlay, setAutoPlay] = useState(false);
   const activeProject = projects[activeIndex];
 
   function openPreview(event, index) {
     trigger.current = event.currentTarget;
+    setAutoPlay(window.matchMedia("(prefers-reduced-motion: no-preference)").matches);
     setActiveIndex(index);
     dialog.current.showModal();
   }
@@ -84,7 +119,7 @@ export default function Work() {
   }
 
   function handlePreviewKeys(event) {
-    if (event.altKey || event.ctrlKey || event.metaKey) return;
+    if (event.altKey || event.ctrlKey || event.metaKey || event.target instanceof HTMLVideoElement) return;
     if (event.key === "ArrowLeft" || event.key === "ArrowRight") {
       event.preventDefault();
       changeProject(event.key === "ArrowLeft" ? -1 : 1);
@@ -152,17 +187,7 @@ export default function Work() {
 
           {activeProject && (
             <>
-              <div className="project-preview-media">
-                <Image
-                  key={activeProject.name}
-                  src={activeProject.img}
-                  alt={activeProject.imageAlt}
-                  fill
-                  loading="eager"
-                  sizes="(min-width: 1320px) 1280px, 94vw"
-                  className="project-preview-image object-contain"
-                />
-              </div>
+              <ProjectPreviewMedia key={activeProject.name} project={activeProject} autoPlay={autoPlay} />
               <footer className="flex flex-wrap items-center justify-between gap-3 px-4 py-3 sm:px-5">
                 <div className="flex items-center gap-2 sm:gap-3">
                   <button type="button" className={previewButtonClass} onClick={() => changeProject(-1)}>Previous</button>
