@@ -7,76 +7,98 @@ import { featuredProjects, otherProjects } from "@/lib/content";
 
 const projects = [...featuredProjects, ...otherProjects];
 const cardImageSizes = "(min-width: 1500px) 440px, (min-width: 960px) 29vw, (min-width: 620px) 44vw, 90vw";
-const previewButtonClass = "min-h-11 rounded-lg border border-white/15 px-3 py-2 text-sm font-semibold text-ink hover:border-accent/50 hover:bg-white/5";
+const icons = {
+  close: "m6 6 12 12M18 6 6 18",
+  previous: "m14 6-6 6 6 6",
+  next: "m10 6 6 6-6 6",
+  play: "m9 5 11 7-11 7z",
+  pause: "M9 5v14m6-14v14",
+  caseStudy: "M6 3h8l4 4v14H6zm8 0v5h4M9 12h6m-6 4h6",
+};
 
-function Technologies({ items }) {
+function PreviewIcon({ name }) {
   return (
-    <ul aria-label="Technologies" className="flex flex-wrap gap-x-3 gap-y-1 text-sm text-[#a5c8b7]">
-      {items.map((tech) => <li key={tech}>{tech}</li>)}
-    </ul>
+    <svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.65" strokeLinecap="round" strokeLinejoin="round">
+      <path d={icons[name]} />
+    </svg>
   );
 }
 
-function FeaturedProject({ project, lead, onPreview }) {
+function ProjectTile({ project, featured, lead = false, onPreview }) {
+  const Heading = featured ? "h3" : "h4";
+
   return (
     <article className={lead ? "work-feature-lead" : undefined}>
-      <div className="work-feature-card">
-        <button
-          type="button"
-          className="work-preview-trigger work-feature-media block w-full overflow-hidden border-b border-white/12 bg-card"
-          aria-label={`Preview ${project.name}`}
-          aria-haspopup="dialog"
-          onClick={onPreview}
-        >
-          <Image
-            src={project.img}
-            alt={project.imageAlt}
-            width={1280}
-            height={661}
-            sizes={lead ? "(min-width: 1500px) 900px, (min-width: 960px) 59vw, 90vw" : cardImageSizes}
-            priority={lead}
-            className="block h-auto w-full"
-          />
-          <span className="work-preview-label" aria-hidden="true">{project.previewClip ? "Play clip" : "Preview"}</span>
-        </button>
-        <div className="space-y-2 px-4 py-4 sm:px-5">
-          <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
-            <h3 className="font-display text-[clamp(1.4rem,2.8vw,2rem)] leading-tight font-semibold tracking-tight text-ink">
-              {project.name}
-            </h3>
-            {project.caseStudyHref && (
-              <Link href={project.caseStudyHref} className="text-sm font-semibold text-accent underline decoration-accent/40 underline-offset-4">
-                Read the <span className="sr-only">{project.name} </span>case study
-              </Link>
-            )}
-          </div>
-          <p className="text-base leading-snug text-ink-2">{project.oneLiner}</p>
-          <Technologies items={project.tech} />
-        </div>
-      </div>
+      <Heading className="sr-only">{project.name}</Heading>
+      <button
+        type="button"
+        className="work-preview-trigger"
+        aria-label={`Preview ${project.name}`}
+        aria-description={project.oneLiner}
+        aria-haspopup="dialog"
+        onClick={onPreview}
+      >
+        <Image
+          src={project.previewClip?.poster ?? project.img}
+          alt=""
+          fill
+          sizes={lead ? "(min-width: 1500px) 900px, (min-width: 960px) 59vw, 90vw" : cardImageSizes}
+          priority={lead}
+          className="object-cover object-top"
+        />
+      </button>
     </article>
   );
 }
 
 function ProjectPreviewMedia({ project, autoPlay }) {
+  const video = useRef(null);
   const [videoFailed, setVideoFailed] = useState(false);
+  const [playing, setPlaying] = useState(false);
   const clip = project.previewClip;
+
+  async function togglePlayback() {
+    const player = video.current;
+    if (!player.paused) {
+      player.pause();
+      return;
+    }
+
+    try {
+      await player.play();
+    } catch {
+      setPlaying(false);
+    }
+  }
 
   return (
     <div className="project-preview-media">
       {clip && !videoFailed ? (
-        <video
-          className="project-preview-image h-full w-full object-contain"
-          src={clip.src}
-          poster={clip.poster}
-          aria-label={clip.description}
-          autoPlay={autoPlay}
-          muted
-          playsInline
-          controls
-          preload="metadata"
-          onError={() => setVideoFailed(true)}
-        />
+        <>
+          <video
+            ref={video}
+            className="project-preview-image h-full w-full object-contain"
+            src={clip.src}
+            poster={clip.poster}
+            aria-label={clip.description}
+            autoPlay={autoPlay}
+            muted
+            playsInline
+            preload="metadata"
+            onPlaying={() => setPlaying(true)}
+            onPause={() => setPlaying(false)}
+            onEnded={() => setPlaying(false)}
+            onError={() => setVideoFailed(true)}
+          />
+          <button
+            type="button"
+            className="project-icon-button project-playback"
+            aria-label={playing ? "Pause video" : "Play video"}
+            onClick={togglePlayback}
+          >
+            <PreviewIcon name={playing ? "pause" : "play"} />
+          </button>
+        </>
       ) : (
         <Image
           src={project.img}
@@ -134,37 +156,15 @@ export default function Work() {
 
       <div className="work-feature-grid">
         {featuredProjects.map((project, index) => (
-          <FeaturedProject key={project.name} project={project} lead={index === 0} onPreview={(event) => openPreview(event, index)} />
+          <ProjectTile key={project.name} project={project} featured lead={index === 0} onPreview={(event) => openPreview(event, index)} />
         ))}
       </div>
 
       <div className="mt-10 border-t border-white/12 pt-6 sm:mt-12">
         <h3 className="mb-5 font-display text-2xl font-semibold tracking-tight sm:text-3xl">More projects</h3>
-        <div className="work-secondary-grid grid gap-x-4 gap-y-7 min-[620px]:grid-cols-2">
+        <div className="work-secondary-grid grid gap-4 min-[620px]:grid-cols-2">
           {otherProjects.map((project, index) => (
-            <article key={project.name}>
-              <button
-                type="button"
-                className="work-preview-trigger aspect-video w-full overflow-hidden rounded-xl border border-white/12 bg-card"
-                aria-label={`Preview ${project.name}`}
-                aria-haspopup="dialog"
-                onClick={(event) => openPreview(event, featuredProjects.length + index)}
-              >
-                <Image
-                  alt={project.imageAlt}
-                  fill
-                  className="object-cover object-top"
-                  src={project.img}
-                  sizes={cardImageSizes}
-                />
-                <span className="work-preview-label" aria-hidden="true">Preview</span>
-              </button>
-              <div className="space-y-2 pt-3">
-                <h4 className="font-display text-xl font-semibold tracking-tight">{project.name}</h4>
-                <p className="text-base leading-relaxed text-ink-2">{project.oneLiner}</p>
-                <Technologies items={project.tech} />
-              </div>
-            </article>
+            <ProjectTile key={project.name} project={project} onPreview={(event) => openPreview(event, featuredProjects.length + index)} />
           ))}
         </div>
       </div>
@@ -177,34 +177,40 @@ export default function Work() {
         onKeyDown={handlePreviewKeys}
         onClick={(event) => { if (event.target === event.currentTarget) closePreview(); }}
       >
+        <h2 id="project-preview-title" className="sr-only">{activeProject?.name ?? "Project preview"}</h2>
         <div className="project-preview-panel">
-          <header className="flex items-center justify-between gap-3 px-4 py-3 sm:px-5">
-            <h2 id="project-preview-title" className="min-w-0 font-display text-xl font-semibold tracking-tight sm:text-2xl">
-              {activeProject?.name ?? "Project preview"}
-            </h2>
-            <button type="button" className={previewButtonClass} onClick={closePreview}>Close</button>
-          </header>
-
+          <button type="button" className="project-icon-button project-preview-close" aria-label="Close preview" onClick={closePreview}>
+            <PreviewIcon name="close" />
+          </button>
           {activeProject && (
-            <>
-              <ProjectPreviewMedia key={activeProject.name} project={activeProject} autoPlay={autoPlay} />
-              <footer className="flex flex-wrap items-center justify-between gap-3 px-4 py-3 sm:px-5">
-                <div className="flex items-center gap-2 sm:gap-3">
-                  <button type="button" className={previewButtonClass} onClick={() => changeProject(-1)}>Previous</button>
-                  <span role="status" aria-atomic="true" className="min-w-[3.2rem] text-center text-sm text-ink-2 tabular-nums">
-                    <span className="sr-only">{activeProject.name}, project </span>{activeIndex + 1} of {projects.length}
-                  </span>
-                  <button type="button" className={previewButtonClass} onClick={() => changeProject(1)}>Next</button>
-                </div>
-                {activeProject.caseStudyHref && (
-                  <Link href={activeProject.caseStudyHref} onClick={closePreview} className="inline-flex min-h-11 items-center text-sm font-semibold text-accent underline decoration-accent/40 underline-offset-4">
-                    Read {activeProject.name} case study
-                  </Link>
-                )}
-              </footer>
-            </>
+            <ProjectPreviewMedia key={activeProject.name} project={activeProject} autoPlay={autoPlay} />
           )}
         </div>
+
+        {activeProject && (
+          <footer className="project-preview-dock">
+            <button type="button" className="project-icon-button" aria-label="Previous project" onClick={() => changeProject(-1)}>
+              <PreviewIcon name="previous" />
+            </button>
+            <span role="status" aria-atomic="true" className="project-preview-position">
+              <span className="sr-only">{activeProject.name}, project </span>{activeIndex + 1} / {projects.length}
+            </span>
+            <button type="button" className="project-icon-button" aria-label="Next project" onClick={() => changeProject(1)}>
+              <PreviewIcon name="next" />
+            </button>
+            {activeProject.caseStudyHref && (
+              <Link
+                href={activeProject.caseStudyHref}
+                className="project-icon-button project-case-link"
+                aria-label={`Read ${activeProject.name} case study`}
+                title="Read case study"
+                onClick={closePreview}
+              >
+                <PreviewIcon name="caseStudy" />
+              </Link>
+            )}
+          </footer>
+        )}
       </dialog>
     </section>
   );
