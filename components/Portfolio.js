@@ -13,8 +13,12 @@ export default function Portfolio() {
     <>
       <Navbar />
       <main className="portfolio-content">
-        <Hero />
-        <Work />
+        <div className="home-showcase">
+          <div className="home-showcase-layout">
+            <Hero />
+            <Work />
+          </div>
+        </div>
         <About />
         <Services />
         <ExperienceProcess />
