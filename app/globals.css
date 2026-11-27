@@ -128,13 +128,85 @@
   background: #131b17;
 }
 
-.work-feature-link {
-  transition: border-color 180ms ease, background-color 180ms ease;
+.work-preview-trigger {
+  position: relative;
+  display: block;
+  cursor: zoom-in;
 }
 
-.work-feature-link:hover {
+.work-preview-trigger:focus-visible {
+  outline-offset: -4px;
+}
+
+.work-preview-label {
+  position: absolute;
+  inset: auto 0.75rem 0.75rem auto;
+  border: 1px solid rgb(221 255 238 / 30%);
+  border-radius: 999px;
+  padding: 0.375rem 0.75rem;
+  background: #14241c;
+  color: #edfff4;
+  font-size: 0.875rem;
+  font-weight: 650;
+}
+
+.work-feature-card:has(.work-preview-trigger:is(:hover, :focus-visible)) {
   border-color: rgb(110 231 183 / 55%);
-  background: #192821;
+}
+
+html:has(.project-preview[open]) {
+  overflow: hidden;
+}
+
+.project-preview {
+  position: fixed;
+  inset: 0;
+  width: min(80rem, calc(100% - 1.5rem));
+  max-width: none;
+  max-height: calc(100dvh - 1.5rem);
+  margin: auto;
+  padding: 0;
+  overflow: auto;
+  overscroll-behavior: contain;
+  border: 1px solid rgb(221 255 238 / 22%);
+  border-radius: 1.25rem;
+  background: #121c17;
+  color: var(--color-ink);
+  box-shadow: 0 28px 100px rgb(0 0 0 / 55%);
+}
+
+.project-preview::backdrop {
+  background: rgb(4 9 7 / 80%);
+  backdrop-filter: blur(12px);
+}
+
+.project-preview-media {
+  position: relative;
+  height: min(59vw, 68dvh);
+  min-height: 8rem;
+  margin-inline: clamp(0.5rem, 2vw, 1.25rem);
+  overflow: hidden;
+  border: 1px solid rgb(221 255 238 / 12%);
+  border-radius: 0.75rem;
+  background: #090e0b;
+}
+
+@keyframes project-preview-enter {
+  from {
+    opacity: 0;
+    transform: translateY(1rem) scale(0.975);
+  }
+}
+
+@keyframes project-backdrop-enter {
+  from { opacity: 0; }
+}
+
+@keyframes project-image-enter {
+  from {
+    opacity: 0.3;
+    transform: scale(0.985);
+  }
 }
 
 @media (min-width: 620px) {
@@ -161,5 +233,89 @@
 @media (min-width: 960px) and (max-height: 690px) {
   .home-intro {
     position: static;
+  }
+}
+
+@keyframes showcase-enter {
+  from {
+    opacity: 0.6;
+    translate: 0 var(--entry-offset, 0.75rem);
+  }
+
+  to {
+    opacity: 1;
+    translate: 0 0;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .home-showcase {
+    --showcase-ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .home-intro > *,
+  .home-work > h2,
+  .work-feature-lead {
+    animation: showcase-enter 600ms var(--showcase-ease-out) both;
+  }
+
+  .home-intro > h1,
+  .home-work > h2 {
+    animation-delay: 65ms;
+  }
+
+  .home-intro > p,
+  .work-feature-lead {
+    animation-delay: 130ms;
+  }
+
+  .home-intro > div:nth-of-type(2) {
+    animation-delay: 170ms;
+  }
+
+  .home-intro > :last-child {
+    animation-delay: 210ms;
+  }
+
+  .home-intro > :focus-within,
+  .work-feature-lead:focus-within {
+    animation: none;
+  }
+
+  @supports (animation-timeline: view()) and (animation-range: entry 0% entry 65%) {
+    .work-feature-grid > :not(.work-feature-lead),
+    .work-secondary-grid > article {
+      --entry-offset: 1rem;
+      animation: showcase-enter auto linear both;
+      animation-timeline: view();
+      animation-range: entry 0% entry 65%;
+    }
+
+    .work-feature-grid > :focus-within,
+    .work-secondary-grid > :focus-within {
+      animation: none;
+    }
+  }
+
+  .project-preview[open] {
+    animation: project-preview-enter 340ms var(--showcase-ease-out, ease-out) both;
+  }
+
+  .project-preview[open]::backdrop {
+    animation: project-backdrop-enter 260ms ease-out both;
+  }
+
+  .project-preview[open] .project-preview-image {
+    animation: project-image-enter 380ms var(--showcase-ease-out, ease-out) both;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) and (hover: hover) and (pointer: fine) {
+  .work-preview-trigger img {
+    transition: scale 500ms var(--showcase-ease-out);
+  }
+
+  .work-preview-trigger:hover img {
+    scale: 1.035;
   }
 }
